@@ -1,5 +1,5 @@
 function goToJoin() {
-  window.location.href = "about.html";
+  window.location.href = "buy.html";
 }
 
 
