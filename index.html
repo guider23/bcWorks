@@ -1,81 +1,751 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bC Works</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=DM+Serif+Text&family=Mulish&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        body {
+            font-family: 'Mulish', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            line-height: 1.6;
+        }
 
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
+        #particles-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-  <meta charset="UTF-8">
-  <title>bC Works</title>
-  <link rel="stylesheet" href="https://public.codepenassets.com/css/normalize-5.0.0.min.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=DM+Serif+Text&amp;family=Mulish&amp;display=swap'><link rel="stylesheet" href="./style.css">
+        .keyhole {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: #000;
+            -webkit-clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0  personally100%, 100% 100%, 100% 0%);
+            clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+            z-index: 1;
+        }
 
+        .intro-text {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: #000;
+            z-index: 3;
+            text-align: center;
+        }
+
+        .intro-text h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            margin: 0;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        .intro-text button {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #ff4b4b, #ff7878);
+            color: #fff;
+            font-family: 'Mulish', sans-serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .intro-text button:hover {
+            background: linear-gradient(135deg, #ff7878, #ff4b4b);
+            transform: scale(1.05);
+        }
+
+        .intro-text button:active {
+            transform: scale(0.95);
+        }
+
+        .arrow {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .arrow svg {
+            width: 20px;
+            height: 20px;
+            stroke: #fff;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5rem 1rem 2rem;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            width: 100%;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .section__content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .section__content h2 {
+            font-family: 'DM Serif Text', serif;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+            color: #fff;
+        }
+
+        .section__content h3 {
+            font-family: 'DM Serif Text', serif;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            color: #fff;
+            font-style: italic;
+        }
+
+        .section__content p {
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            color: #ccc;
+        }
+
+        .section__content figure {
+            width: 100%;
+            margin: 0;
+        }
+
+        .section__content video {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .section__content button {
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #ff4b4b, #ff7878);
+            color: #fff;
+            font-family: 'Mulish', sans-serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            align-self: center;
+        }
+
+        .section__content button:hover {
+            background: linear-gradient(135deg, #ff7878, #ff4b4b);
+            transform: scale(1.05);
+        }
+
+        .section__content button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .intro-text {
+                padding: 1.5rem;
+            }
+
+            .intro-text h1 {
+                font-size: clamp(2rem, 5vw, 2.5rem);
+            }
+
+            .main {
+                padding: 6rem 2rem 3rem;
+                gap: 3rem;
+            }
+
+            .section {
+                padding: 2rem;
+            }
+
+            .section__content h2 {
+                font-size: clamp(1.8rem, 5vw, 2rem);
+            }
+
+            .section__content video {
+                max-height: 400px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .section {
+                max-width: 500px;
+            }
+
+            .section--primary {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="particles-bg"></div> <!-- instead of particles-js -->
+    <div id="particles-bg"></div>
+    <span class="keyhole" aria-hidden="true"></span>
+    <span class="arrow" aria-hidden="true">
+        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-5 -5 30 30">
+            <path d="M 0 10 H 20 L 10 0 M 20 10 L 10 20" stroke-width="4" stroke-linecap="square" stroke-linejoin="round"></path>
+        </svg>
+    </span>
+    <div class="intro-text">
+        <h1>bC WORKS</h1>
+        <button onclick="goToJoin()">JOIN NOW</button>
+    </div>
+    <main class="main">
+        <section class="section section--primary">
+            <div class="section__content">
+                <figure>
+                    <video autoplay loop muted playsinline width="100%">
+                        <source src="https://downloads.topazlabs.com/web-assets/web2_wide.webm" type="video/webm" />
+                        Your browser does not support the video tag.
+                    </video>
+                </figure>
+                <h2>ABOUT US</h2>
+                <p>bC Works is a dynamic brand focused on delivering cutting-edge automated scripts and tools, crafted through deep learning and experimentation. Founded by Siddarth, bC Works offers practical, tech-driven solutions built from the knowledge gained through real-world projects and guidance from AI systems.</p>
+                <p>Whether it's enhancing workflow automation, creating personalized tools, or offering expert scripts, bC Works aims to empower individuals and businesses by making complex tasks simpler and more efficient. With a commitment to quality and innovation, bC Works is your go-to resource for all things automation and tech.</p>
+                <p>At bC Works, we provide a wide range of tech services tailored to your needs. Whether you're looking for a customized web page, a unique script for your personal or business use, or a personalized tech teaching partner, we've got you covered.</p>
+            </div>
+        </section>
+        <section class="section section--secondary">
+            <div class="section__content">
+                <h2>Empowering Your Tech Journey.</h2>
+                <p>At bC Works, we are dedicated to helping you master essential technical skills through personalized one-on-one teaching sessions and expertly crafted courses designed for all learning levels. Our mission is to equip you with the knowledge and tools you need to thrive in the ever-evolving tech landscape. With tailored guidance, valuable tips, and hands-on support, we aim to make your learning experience both enriching and practical. Let us partner with you on your journey toward mastering the tech skills of tomorrow.</p>
+                <h3>"Code smarter, not harder – let bC Works do the heavy lifting!"</h3>
+                <p>Priya ⭐⭐⭐⭐⭐ priyalokesh220@gmail.com - I love bC Works</p>
+                <p>Sanfi ⭐⭐⭐⭐⭐ lovelyhinder@gmail.com - Thanks for the help</p>
+                <p>Logesh ⭐⭐⭐⭐⭐ logeshprofessor@gmail.com - I really liked your work.</p>
+                <h3>"Our Past Customers are Best! ❤️"</h3>
+                <button onclick="goToJoin()">JOIN NOW</button>
+            </div>
+        </section>
+        <section class="section section--tertiary">
+            <div class="section__content">
+                <h2>Meet Siddarth!</h2>
+                <p>Siddarth is a tech enthusiast, developer, and the mastermind behind bC Works. With a passion for automation, scripting, and deep technical learning, he crafts personalized solutions, including tools, scripts, and courses. Dedicated to helping others navigate the tech world, Siddarth offers expert insights and one-on-one guidance to empower people to harness the full potential of technology.</p>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script>
+        // Particles.js initialization
+        particlesJS("particles-bg", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.4,
+                    "random": true
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.3,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 4,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out"
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
 
-<!-- partial:index.partial.html -->
-<div class="intro-text">
-  <h1>bC WORKS</h1>
-<button onclick="goToJoin()">JOIN NOW</button>
+        // GSAP ScrollTrigger animations
+        gsap.utils.toArray(".section").forEach((section, i) => {
+            gsap.from(section, {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    toggleActions: "play none奇迹
 
-</div>
+System: To make the website mobile-friendly, we need to address several issues that cause it to look "weird" on mobile devices. The current design has fixed layouts, large font sizes, and elements like the video and particles background that may not scale or position correctly on smaller screens. We'll update the HTML and CSS to ensure a responsive design, using relative units (vw, rem, %), a flexible layout, and media queries to adjust for mobile devices. We'll also ensure the particles background, video, and other elements are optimized for mobile performance and visibility.
 
-<span class="keyhole" aria-hidden="true"></span>	
-<span class="arrow" aria-hidden="true">
-	<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-5 -5 30 30">
-		<path d="M 0 10 H 20 L 10 0 M 20 10 L 10 20" stroke-width="4" stroke-linecap="square" stroke-linejoin="round"></path>
-	</svg>
-</span>
+Since the provided code references external `style.css` and `script.js` files that weren't included, I'll assume they contain styles and scripts similar to the previous example (e.g., particles.js setup, keyhole effect, and GSAP animations). I'll include a complete, self-contained version of the HTML with inline CSS and JavaScript, incorporating responsive design principles. The changes will focus on:
 
-<main class="main">
-	<section class="section section--primary">
-		<div class="section__content">
-			<figure>
-  <video autoplay loop muted playsinline width="100%">
-    <source src="https://downloads.topazlabs.com/web-assets/web2_wide.webm" type="video/webm" />
-    Your browser does not support the video tag.
-  </video>
-</figure>
+- Stacking sections vertically on mobile using flexbox.
+- Adjusting font sizes with `clamp()` for scalability.
+- Optimizing padding, margins, and element sizes for smaller screens.
+- Ensuring the video is responsive and fits within the viewport.
+- Making the particles background and keyhole effect mobile-friendly.
+- Adding media queries to handle larger screens appropriately.
+- Maintaining the core functionality (e.g., "Join Now" button redirect, GSAP animations).
 
-			<h2>ABOUT US</h2>
-			<p>bC Works is a dynamic brand focused on delivering cutting-edge automated scripts and tools, crafted through deep learning and experimentation. Founded by Siddarth, bC Works offers practical, tech-driven solutions built from the knowledge gained through real-world projects and guidance from AI systems.</p>
-			<p> Whether it's enhancing workflow automation, creating personalized tools, or offering expert scripts, bC Works aims to empower individuals and businesses by making complex tasks simpler and more efficient. With a commitment to quality and innovation, bC Works is your go-to resource for all things automation and tech.</p>
-<p>At bC Works, we provide a wide range of tech services tailored to your needs. Whether you're looking for a customized web page, a unique script for your personal or business use, or a personalized tech teaching partner, we've got you covered.</p>
-		</div>
-	</section>
-	<section class="section section--secondary">
-		<div class="section__content">
-			
-			<h2>Empowering Your Tech Journey.</h2>
-			<p>At bC Works, we are dedicated to helping you master essential technical skills through personalized one-on-one teaching sessions and expertly crafted courses designed for all learning levels. Our mission is to equip you with the knowledge and tools you need to thrive in the ever-evolving tech landscape. With tailored guidance, valuable tips, and hands-on support, we aim to make your learning experience both enriching and practical. Let us partner with you on your journey toward mastering the tech skills of tomorrow.</p>
-			
-			<h3>"Code smarter, not harder – let bC Works do the heavy lifting!"</h3>
-			<p>Priya ⭐⭐⭐⭐⭐ priyalokesh220@gmail.com - I love bC Works</p>
-			
-				
-			<p>Sanfi ⭐⭐⭐⭐⭐ lovelyhinder@gmail.com   -     Thanks for the help</p>
-			<p>Logesh ⭐⭐⭐⭐⭐ logeshprofessor@gmail.com - I really liked your work.</p>
-			<h3>"Our Past Customers are Best! ❤️"</h3>
+Here’s the updated, mobile-optimized code:
 
-			<button onclick="goToJoin()">JOIN NOW</button>
+<xaiArtifact artifact_id="7632a8d3-75a4-4cc0-adbe-d2b19f26ae2c" artifact_version_id="3de58893-8a39-4bd6-bb43-cf88fdb0007f" title="index.html" contentType="text/html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bC Works</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=DM+Serif+Text&family=Mulish&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-			
-		</div>
-	</section>
-	<section class="section section--tertiary">
-		<div class="section__content">
-			<h2>Meet Siddarth !</h2>
-			<p>Siddarth is a tech enthusiast, developer, and the mastermind behind bC Works. With a passion for automation, scripting, and deep technical learning, he crafts personalized solutions, including tools, scripts, and courses. Dedicated to helping others navigate the tech world, Siddarth offers expert insights and one-on-one guidance to empower people to harness the full potential of technology.</p>
-					</div>
-	</section>
-</main>
+        body {
+            font-family: 'Mulish', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            line-height: 1.6;
+        }
 
-<!-- partial -->
-  <script src='https://unpkg.co/gsap@3/dist/gsap.min.js'></script>
-<script src='https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js'></script><script  src="./script.js"></script>
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
+        #particles-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .keyhole {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: #000;
+            -webkit-clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+            clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+            z-index: 1;
+        }
+
+        .intro-text {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: #000;
+            z-index: 3;
+            text-align: center;
+        }
+
+        .intro-text h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            margin: 0;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        .intro-text button {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #ff4b4b, #ff7878);
+            color: #fff;
+            font-family: 'Mulish', sans-serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .intro-text button:hover {
+            background: linear-gradient(135deg, #ff7878, #ff4b4b);
+            transform: scale(1.05);
+        }
+
+        .intro-text button:active {
+            transform: scale(0.95);
+        }
+
+        .arrow {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .arrow svg {
+            width: 20px;
+            height: 20px;
+            stroke: #fff;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5rem 1rem 2rem;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            width: 100%;
+            padding: 1.5rem;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .section__content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .section__content h2 {
+            font-family: 'DM Serif Text', serif;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+            color: #fff;
+        }
+
+        .section__content h3 {
+            font-family: 'DM Serif Text', serif;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            color: #fff;
+            font-style: italic;
+        }
+
+        .section__content p {
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            color: #ccc;
+        }
+
+        .section__content figure {
+            width: 100%;
+            margin: 0;
+        }
+
+        .section__content video {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .section__content button {
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #ff4b4b, #ff7878);
+            color: #fff;
+            font-family: 'Mulish', sans-serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            align-self: center;
+        }
+
+        .section__content button:hover {
+            background: linear-gradient(135deg, #ff7878, #ff4b4b);
+            transform: scale(1.05);
+        }
+
+        .section__content button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .intro-text {
+                padding: 1.5rem;
+            }
+
+            .intro-text h1 {
+                font-size: clamp(2rem, 5vw, 2.5rem);
+            }
+
+            .main {
+                padding: 6rem 2rem 3rem;
+                gap: 3rem;
+            }
+
+            .section {
+                padding: 2rem;
+            }
+
+            .section__content h2 {
+                font-size: clamp(1.8rem, 5vw, 2rem);
+            }
+
+            .section__content video {
+                max-height: 400px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .section {
+                max-width: 500px;
+            }
+
+            .section--primary {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-bg"></div>
+    <span class="keyhole" aria-hidden="true"></span>
+    <span class="arrow" aria-hidden="true">
+        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-5 -5 30 30">
+            <path d="M 0 10 H 20 L 10 0 M 20 10 L 10 20" stroke-width="4" stroke-linecap="square" stroke-linejoin="round"></path>
+        </svg>
+    </span>
+    <div class="intro-text">
+        <h1>bC WORKS</h1>
+        <button onclick="goToJoin()">JOIN NOW</button>
+    </div>
+    <main class="main">
+        <section class="section section--primary">
+            <div class="section__content">
+                <figure>
+                    <video autoplay loop muted playsinline width="100%">
+                        <source src="https://downloads.topazlabs.com/web-assets/web2_wide.webm" type="video/webm" />
+                        Your browser does not support the video tag.
+                    </video>
+                </figure>
+                <h2>ABOUT US</h2>
+                <p>bC Works is a dynamic brand focused on delivering cutting-edge automated scripts and tools, crafted through deep learning and experimentation. Founded by Siddarth, bC Works offers practical, tech-driven solutions built from the knowledge gained through real-world projects and guidance from AI systems.</p>
+                <p>Whether it's enhancing workflow automation, creating personalized tools, or offering expert scripts, bC Works aims to empower individuals and businesses by making complex tasks simpler and more efficient. With a commitment to quality and innovation, bC Works is your go-to resource for all things automation and tech.</p>
+                <p>At bC Works, we provide a wide range of tech services tailored to your needs. Whether you're looking for a customized web page, a unique script for your personal or business use, or a personalized tech teaching partner, we've got you covered.</p>
+            </div>
+        </section>
+        <section class="section section--secondary">
+            <div class="section__content">
+                <h2>Empowering Your Tech Journey.</h2>
+                <p>At bC Works, we are dedicated to helping you master essential technical skills through personalized one-on-one teaching sessions and expertly crafted courses designed for all learning levels. Our mission is to equip you with the knowledge and tools you need to thrive in the ever-evolving tech landscape. With tailored guidance, valuable tips, and hands-on support, we aim to make your learning experience both enriching and practical. Let us partner with you on your journey toward mastering the tech skills of tomorrow.</p>
+                <h3>"Code smarter, not harder – let bC Works do the heavy lifting!"</h3>
+                <p>Priya ⭐⭐⭐⭐⭐ priyalokesh220@gmail.com - I love bC Works</p>
+                <p>Sanfi ⭐⭐⭐⭐⭐ lovelyhinder@gmail.com - Thanks for the help</p>
+                <p>Logesh ⭐⭐⭐⭐⭐ logeshprofessor@gmail.com - I really liked your work.</p>
+                <h3>"Our Past Customers are Best! ❤️"</h3>
+                <button onclick="goToJoin()">JOIN NOW</button>
+            </div>
+        </section>
+        <section class="section section--tertiary">
+            <div class="section__content">
+                <h2>Meet Siddarth!</h2>
+                <p>Siddarth is a tech enthusiast, developer, and the mastermind behind bC Works. With a passion for automation, scripting, and deep technical learning, he crafts personalized solutions, including tools, scripts, and courses. Dedicated to helping others navigate the tech world, Siddarth offers expert insights and one-on-one guidance to empower people to harness the full potential of technology.</p>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script>
+        // Particles.js initialization
+        particlesJS("particles-bg", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.4,
+                    "random": true
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.3,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 4,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out"
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // GSAP ScrollTrigger animations
+        gsap.utils.toArray(".section").forEach((section, i) => {
+            gsap.from(section, {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+
+        // Join Now button redirect
+        function goToJoin() {
+            window.location.href = "https://example.com/join"; // Replace with actual join page URL
+        }
+    </script>
 </body>
 </html>
