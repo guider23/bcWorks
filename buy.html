@@ -34,8 +34,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            padding: 1.5rem;
+            width: 100%;
+            padding: 1rem;
             background: #000;
             z-index: 3;
             pointer-events: auto;
@@ -43,7 +43,7 @@
         }
 
         .intro-text h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
             color: #fff;
             text-shadow: 0 0 10px #fff;
             font-family: "Poppins", serif;
@@ -55,7 +55,7 @@
         }
 
         body {
-            font: 400 1.2rem/1.45 "Mulish", sans-serif;
+            font: 400 1rem/1.45 "Mulish", sans-serif;
             background: #000;
             color: #fff;
             max-width: 100%;
@@ -64,93 +64,94 @@
             scrollbar-width: none;
             margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            flex-wrap: wrap;
-            gap: 2rem;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         h1, h2, h3, h4, h5 {
             font-family: "DM Serif Text", serif;
-            line-height: 1;
+            line-height: 1.2;
             font-weight: 400;
         }
 
         h1 {
-            font-size: 5.2rem;
+            font-size: clamp(2rem, 8vw, 3rem);
         }
 
         h2 {
-            font-size: 3.9rem;
+            font-size: clamp(1.5rem, 6vw, 2rem);
         }
 
         h3 {
-            font-size: 2.6rem;
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
         }
 
         h4 {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 4vw, 1.2rem);
         }
 
         .container {
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 2rem;
-            max-width: 1200px;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
             width: 100%;
+            max-width: 1200px;
+            padding-top: 4rem;
         }
 
         .product-card, .code-card {
             background: #1a1a1a;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            width: 400px;
-            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            padding: 1.5rem;
             text-align: center;
             z-index: 2;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .product-card:hover, .code-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
         }
 
         .product-card img {
             width: 100%;
-            height: 250px;
+            height: auto;
+            max-height: 200px;
             object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
         }
 
         .product-card h2, .code-card h2 {
-            margin: 0 0 1rem;
-            font-size: 2.6rem;
+            margin: 0 0 0.8rem;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
             color: #fff;
         }
 
         .product-card p, .code-card p {
-            margin: 0 0 1.5rem;
-            font-size: 1rem;
+            margin: 0 0 1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
             color: #ccc;
         }
 
         .buy-now-button {
             display: inline-block;
-            padding: 15px 40px;
+            padding: 10px 30px;
             background: linear-gradient(135deg, #ff4b4b, #ff7878);
             color: #fff;
             font-family: "Mulish", sans-serif;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
             font-weight: 600;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 25px;
             transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(255, 75, 75, 0.4);
+            box-shadow: 0 3px 10px rgba(255, 75, 75, 0.4);
         }
 
         .buy-now-button:hover {
@@ -164,16 +165,16 @@
 
         .copy-button {
             display: none;
-            padding: 12px 30px;
+            padding: 10px 30px;
             background: linear-gradient(135deg, #4bc0c0, #00e6e6);
             color: #fff;
             font-family: "Mulish", sans-serif;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
             font-weight: 600;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 25px;
             transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(0, 230, 230, 0.4);
+            box-shadow: 0 3px 10px rgba(0, 230, 230, 0.4);
             border: none;
             cursor: pointer;
         }
@@ -196,8 +197,8 @@
         .instruction {
             font-style: italic;
             color: #a0a0a0;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
+            margin-top: 1rem;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
         }
 
         @-webkit-keyframes float {
@@ -217,6 +218,31 @@
                 transform: translateY(50%);
             }
         }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+            }
+
+            .container {
+                flex-direction: row;
+                justify-content: center;
+                gap: 2rem;
+            }
+
+            .product-card, .code-card {
+                padding: 2rem;
+                max-width: 400px;
+            }
+
+            .intro-text {
+                padding: 1.5rem;
+            }
+
+            .intro-text h1 {
+                font-size: clamp(2rem, 5vw, 2.5rem);
+            }
+        }
     </style>
 </head>
 <body>
@@ -234,7 +260,7 @@
             <a href="#" class="buy-now-button">Buy Now</a>
         </div>
         <div class="code-card">
-            <h2>Already Purchased? <br> <br>Unlock the Code</h2>
+            <h2>Already Purchased? <br>Unlock the Code</h2>
             <button class="copy-button">Copy Code</button>
             <p class="instruction">Random Tip: Press 'Z' twice quickly to toggle a secret mode!</p>
         </div>
