@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bC Works - Gen Q & Code</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Mulish:wght@400&family=DM+Serif+Text&display=swap" rel="stylesheet">
+    <style>
+        .keyhole {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: #000;
+            -webkit-clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+                    clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
+            z-index: 1;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .intro-text {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            padding: 1.5rem;
+            background: #000;
+            z-index: 3;
+            pointer-events: auto;
+            text-align: center;
+        }
+
+        .intro-text h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+            font-family: "Poppins", serif;
+            margin: 0;
+        }
+
+        html {
+            font-size: 100%;
+        }
+
+        body {
+            font: 400 1.2rem/1.45 "Mulish", sans-serif;
+            background: #000;
+            color: #fff;
+            max-width: 100%;
+            overflow-x: hidden;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: "DM Serif Text", serif;
+            line-height: 1;
+            font-weight: 400;
+        }
+
+        h1 {
+            font-size: 5.2rem;
+        }
+
+        h2 {
+            font-size: 3.9rem;
+        }
+
+        h3 {
+            font-size: 2.6rem;
+        }
+
+        h4 {
+            font-size: 1.3rem;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .product-card, .code-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 400px;
+            padding: 2rem;
+            text-align: center;
+            z-index: 2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover, .code-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card h2, .code-card h2 {
+            margin: 0 0 1rem;
+            font-size: 2.6rem;
+            color: #fff;
+        }
+
+        .product-card p, .code-card p {
+            margin: 0 0 1.5rem;
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        .buy-now-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff4b4b, #ff7878);
+            color: #fff;
+            font-family: "Mulish", sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(255, 75, 75, 0.4);
+        }
+
+        .buy-now-button:hover {
+            background: linear-gradient(135deg, #ff7878, #ff4b4b);
+            transform: scale(1.05);
+        }
+
+        .buy-now-button:active {
+            transform: scale(0.95);
+        }
+
+        .copy-button {
+            display: none;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #4bc0c0, #00e6e6);
+            color: #fff;
+            font-family: "Mulish", sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 230, 230, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .product-card:hover .buy-now-button,
+        .code-card:hover .copy-button,
+        .copy-button.visible {
+            display: inline-block;
+        }
+
+        .copy-button:hover {
+            background: linear-gradient(135deg, #00e6e6, #4bc0c0);
+            transform: scale(1.05);
+        }
+
+        .copy-button:active {
+            transform: scale(0.95);
+        }
+
+        .instruction {
+            font-style: italic;
+            color: #a0a0a0;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        @-webkit-keyframes float {
+            from {
+                transform: translateY(-50%);
+            }
+            to {
+                transform: translateY(50%);
+            }
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(-50%);
+            }
+            to {
+                transform: translateY(50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="keyhole"></div>
+    <div class="intro-text">
+        <h1>bC Works</h1>
+    </div>
+    <div class="container">
+        <div class="product-card">
+            <img src="https://i.ibb.co/TMGT3PD4/image.jpg" alt="Gen Q Product Image">
+            <h2>Gen Q</h2>
+            <p>Unlock your exams with ease.<br>Ensure exclusive access—only one user at a time. A unique code will be provided for each session.</p>
+            <p><strong>Price:</strong> ₹70</p>
+            <a href="#" class="buy-now-button">Buy Now</a>
+        </div>
+        <div class="code-card">
+            <h2>Already Purchased? <br> <br>Unlock the Code</h2>
+            <button class="copy-button">Copy Code</button>
+            <p class="instruction">Random Tip: Press 'Z' twice quickly to toggle a secret mode!</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 100,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.4,
+                    "random": true
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.3,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 4,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        const code = `javascript:(async () => {   
+    const gsapScript = document.createElement('script');   
+    gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';   
+    document.head.appendChild(gsapScript);    
+
+    await new Promise(resolve => gsapScript.onload = resolve);    
+
+    const css = \`
+        #ask-bot-panel {       
+            position: fixed;       
+            bottom: 100px;       
+            right: 20px;       
+            width: 330px;       
+            background: rgba(255, 255, 255, 0.15);       
+            backdrop-filter: blur(10px);       
+            color: #000000;       
+            border-radius: .25em;       
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);       
+            z-index: 9999;       
+            font-family: 'Helvetica Neue','Helvetica','Segoe UI', Arial, sans-serif;       
+            transform: translateY(50px);       
+            opacity: 0;       
+            pointer-events: none;     
+        }     
+        #ask-bot-panel.show {       
+            pointer-events: auto;     
+        }     
+        #ask-bot-panel .response {       
+            padding: 1em;       
+            font-size: 1em;       
+            line-height: 1.4em;       
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);       
+            max-height: 200px;       
+            overflow-y: auto;       
+            white-space: pre-wrap;       
+            color: #000000;     
+        }     
+        #ask-bot-panel .copy-btn {       
+            background-color: rgba(0, 0, 0, 0.2);       
+            color: #000;       
+            font-size: 0.8em;       
+            border: none;       
+            border-radius: 0 0 .25em .25em;       
+            padding: 0.5em 1em;       
+            cursor: pointer;       
+            width: 100%;       
+            backdrop-filter: blur(5px);     
+        }     
+        #ask-bot-button {       
+            position: fixed;       
+            bottom: 20px;       
+            right: 20px;       
+            font-size: 0.8em;       
+            background-color: rgba(255, 255, 255, 0.1);       
+            color: #000;       
+            padding: .7em 1em;       
+            border-radius: .25em;       
+            margin-right: 1.25em;       
+            border: 1px solid rgba(0, 0, 0, 0.1);       
+            cursor: pointer;       
+            font-family: 'Helvetica Neue','Helvetica','Segoe UI', Arial, sans-serif;       
+            font-weight: 400;       
+            z-index: 9999;       
+            backdrop-filter: blur(8px);     
+        }     
+        #ask-bot-button:hover {       
+            background-color: rgba(255, 255, 255, 0.2);     
+        }     
+        #ask-bot-panel input {       
+            width: 100%;       
+            padding: 0.7em 1em;       
+            border: none;       
+            font-size: 1em;       
+            border-radius: 0;       
+            outline: none;       
+            font-family: inherit;       
+            box-sizing: border-box;       
+            border-top: 1px solid rgba(0,0,0,0.1);       
+            background: rgba(255,255,255,0.05);       
+            color: #000;       
+            backdrop-filter: blur(6px);     
+        }     
+        #message-banner {       
+            position: fixed;       
+            top: 20px;       
+            right: 20px;       
+            background: #000;       
+            color: #fff;       
+            padding: 0.8em 1.5em;       
+            border-radius: .5em;       
+            font-weight: bold;       
+            z-index: 9999;       
+            opacity: 0;       
+            transform: translateY(-30px);       
+            pointer-events: none;       
+            font-family: 'Segoe UI', sans-serif;     
+        }   
+    \`;   
+    const style = document.createElement('style');   
+    style.textContent = css;   
+    document.head.appendChild(style);    
+
+    const showMessage = (msg) => {     
+        let banner = document.getElementById('message-banner');     
+        if (!banner) {       
+            banner = document.createElement('div');       
+            banner.id = 'message-banner';       
+            document.body.appendChild(banner);     
+        }     
+        banner.textContent = msg;     
+        gsap.to(banner, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });     
+        setTimeout(() => {       
+            gsap.to(banner, { opacity: 0, y: -30, duration: 0.4, ease: 'power2.in' });     
+        }, 2500);   
+    };    
+
+    const panel = document.createElement('div');   
+    panel.id = 'ask-bot-panel';   
+    panel.innerHTML = \`
+        <div class="response">Only Premium Users Can Use this!<br>Have a promo code?<br>-Made by bCworks</div>     
+        <button class="copy-btn" style="display:none">Copy to Clipboard</button>     
+        <input type="text" placeholder="Enter code here..." id="code-check" />   
+    \`;   
+    document.body.appendChild(panel);    
+
+    const btn = document.createElement('button');   
+    btn.id = 'ask-bot-button';   
+    btn.textContent = 'Next';   
+    document.body.appendChild(btn);    
+
+    let hideMode = false;   
+    let zPressed = 0;   
+    document.addEventListener('keydown', (e) => {     
+        if (e.key.toLowerCase() === 'z') {       
+            zPressed++;       
+            setTimeout(() => zPressed = 0, 500);       
+            if (zPressed >= 2) {         
+                hideMode = !hideMode;         
+                panel.style.display = hideMode ? 'none' : '';         
+                btn.style.display = hideMode ? 'none' : '';       
+            }     
+        }   
+    });    
+
+    const supabaseScript = document.createElement('script');   
+    supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';   
+    supabaseScript.onload = async () => {     
+        const { createClient } = supabase;     
+        const supabaseUrl = 'https://kekgqjrueyoxlasfnnhl.supabase.co';     
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtla2dxanJ1ZXlveGxhc2ZubmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyODA4MTYsImV4cCI6MjA1OTg1NjgxNn0.SXyJzx5N8AqxSSFD858y-cSB5wUH7mmC4oXluJlZA6g';     
+        const db = createClient(supabaseUrl, supabaseKey);      
+
+        let unlocked = false;     
+        let currentCode = '';      
+
+        btn.onclick = () => {       
+            const isVisible = panel.classList.contains('show');       
+            if (!isVisible) {         
+                panel.classList.add('show');         
+                gsap.to(panel, { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out' });       
+            } else {         
+                gsap.to(panel, {           
+                    opacity: 0,           
+                    y: 50,           
+                    duration: 0.3,           
+                    ease: 'power1.in',           
+                    onComplete: () => panel.classList.remove('show')         
+                });       
+            }     
+        };      
+
+        const response = panel.querySelector('.response');     
+        const copyBtn = panel.querySelector('.copy-btn');     
+        const input = panel.querySelector('input');      
+
+        copyBtn.onclick = () => {       
+            navigator.clipboard.writeText(response.textContent.replace(/^Answer:\\s*/, '')).then(() => {         
+                copyBtn.textContent = 'Copied!';         
+                setTimeout(() => (copyBtn.textContent = 'Copy to Clipboard'), 2000);       
+            });     
+        };      
+
+        input.addEventListener('keydown', async (e) => {       
+            if (e.key === 'Enter') {         
+                const value = input.value.trim();          
+
+                if (!unlocked) {           
+                    const { data: codeData, error: codeError } = await db             
+                        .from('access_codes')             
+                        .select('*')             
+                        .eq('code', value)             
+                        .single();            
+
+                    if (codeError || !codeData) {             
+                        showMessage('❌ Invalid code');             
+                        input.value = '';             
+                        gsap.fromTo(input, { x: -10 }, { x: 10, duration: 0.1, repeat: 3, yoyo: true });             
+                        return;           
+                    }            
+
+                    if (codeData.is_active) {             
+                        showMessage('⚠️ Code already in use');             
+                        input.value = '';             
+                        return;           
+                    }            
+
+                    await db.from('access_codes').update({ is_active: true }).eq('code', value);           
+                    unlocked = true;           
+                    currentCode = value;            
+
+                    showMessage('🎉 Code accepted!');           
+                    response.textContent = ' Code accepted! Ask your question...';           
+                    input.value = '';           
+                    input.placeholder = 'Type your question here...';           
+                    gsap.fromTo(panel, { backgroundColor: 'rgba(255,255,255,0.15)' }, { backgroundColor: '#c8f7c5', duration: 0.3, yoyo: true, repeat: 1 });           
+                    return;         
+                }          
+
+                if (!value) return;         
+                response.textContent = '⏳ Fetching answer...';         
+                copyBtn.style.display = 'none';          
+
+                try {           
+                    const { data, error } = await db             
+                        .from('qa_pairs')             
+                        .select('*')             
+                        .ilike('question', \`%\${value}%\`)             
+                        .limit(1);            
+
+                    if (error) {             
+                        response.textContent = 'Error: ' + error.message;           
+                    } else if (data.length === 0) {             
+                        response.textContent = 'No matching answer.';           
+                    } else {             
+                        response.textContent = 'Answer: ' + data[0].answer;             
+                        copyBtn.style.display = 'block';             
+                        gsap.fromTo(response, { backgroundColor: 'rgba(255,255,255,0.15)' }, { backgroundColor: '#e0f7ff', duration: 0.3, yoyo: true, repeat: 1 });           
+                    }         
+                } catch (err) {           
+                    response.textContent = 'Unexpected error: ' + err.message;         
+                }          
+
+                input.value = '';       
+            }     
+        });      
+
+        window.addEventListener('beforeunload', async () => {       
+            if (unlocked && currentCode) {         
+                await db.from('access_codes').update({ is_active: false }).eq('code', currentCode);       
+            }     
+        });   
+    };   
+    document.head.appendChild(supabaseScript); 
+})();`;
+
+        const copyButton = document.querySelector('.copy-button');
+
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(code).then(() => {
+                copyButton.textContent = 'Copied!';
+                copyButton.classList.add('visible');
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy Code';
+                    copyButton.classList.remove('visible');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
