@@ -606,10 +606,24 @@
             });
         });
     </script>
-    <script>
+   <script>
   function changeButton(button) {
-    button.textContent = "Processing...";
-    button.classList.add("clicked");
+    // Step 1: First click - change to "Processing..."
+    if (!button.classList.contains("stage-1")) {
+      button.textContent = "Processing...";
+      button.classList.add("stage-1");
+
+      // Step 2: After delay, change to "Verify"
+      setTimeout(() => {
+        button.textContent = "Verify";
+        button.classList.add("stage-2");
+      }, 2000); // delay in milliseconds (2 seconds)
+    }
+
+    // Step 3: Second click - redirect to wa.link
+    else if (button.classList.contains("stage-2")) {
+      window.location.href = "https://wa.link/lfrofq";
+    }
   }
 </script>
 
