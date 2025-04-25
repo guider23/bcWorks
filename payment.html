@@ -333,4 +333,29 @@
     transform: translate(-63px, -10px);
     position: fixed;
   }
-</style><webhighlights-popup-toolbox></webhighlights-popup-toolbox><webhighlights-marker style="position: fixed; left: 665px; top: 528px;"></webhighlights-marker></body><chatgpt-sidebar data-gpts-theme="light"></chatgpt-sidebar><text-blaze-app-reference style="display: contents !important;"></text-blaze-app-reference><webhighlights-sidebar alignment="left" sidebar-width="400"></webhighlights-sidebar></html>
+</style><webhighlights-popup-toolbox></webhighlights-popup-toolbox><webhighlights-marker style="position: fixed; left: 665px; top: 528px;"></webhighlights-marker>
+<a href="#" class="buy-now-button" onclick="changeButton(this)">Buy Now</a>
+
+<script>
+  function changeButton(button) {
+    // Step 1: First click - change to "Processing..."
+    if (!button.classList.contains("stage-1")) {
+      button.textContent = "Processing...";
+      button.classList.add("stage-1");
+
+      // Step 2: After delay, change to "Verify"
+      setTimeout(() => {
+        button.textContent = "Verify";
+        button.classList.add("stage-2");
+      }, 2000); // delay in milliseconds (2 seconds)
+    }
+
+    // Step 3: Second click - redirect to wa.link
+    else if (button.classList.contains("stage-2")) {
+      window.location.href = "https://wa.link/lfrofq";
+    }
+  }
+</script>
+
+
+</body><chatgpt-sidebar data-gpts-theme="light"></chatgpt-sidebar><text-blaze-app-reference style="display: contents !important;"></text-blaze-app-reference><webhighlights-sidebar alignment="left" sidebar-width="400"></webhighlights-sidebar></html>
