@@ -2,39 +2,199 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Deactivate All Access Codes</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Code Deactivation</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       display: flex;
-      height: 100vh;
       justify-content: center;
       align-items: center;
-      background-color: #f9f9f9;
+      min-height: 100vh;
+      background: #1C2526; /* Dark industrial gray */
     }
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      border: none;
-      background-color: #0077ff;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+
+    .control-panel {
+      background: #2D3839; /* Lighter gray */
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      border: 1px solid #B91C1C; /* Red accent */
     }
-    button:hover {
-      background-color: #005ec2;
+
+    h1 {
+      font-size: 1.125rem;
+      color: #FEE2E2; /* Soft red */
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
     }
-    button:disabled {
-      background-color: gray;
+
+    p {
+      font-size: 0.75rem;
+      color: #9CA3AF; /* Light gray */
+      margin-bottom: 1rem;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 50px;
+      background: #1C2526;
+      border-radius: 0.25rem;
+      border: 2px solid #B91C1C;
+      overflow: hidden;
+    }
+
+    .slider-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        #3F3F46,
+        #3F3F46 8px,
+        #27272A 8px,
+        #27272A 16px
+      );
+    }
+
+    .slider {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 80px;
+      height: 38px;
+      background: #B91C1C; /* Red slider */
+      border-radius: 0.2rem;
+      cursor: grab;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FEE2E2;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .slider:active {
+      cursor: grabbing;
+    }
+
+    .slider.slid {
+      transform: translateX(calc(100% - 86px));
+    }
+
+    .slider.disabled {
+      background: #4B5563; /* Gray */
       cursor: not-allowed;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #2D3839;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      width: 90%;
+      max-width: 280px;
+      text-align: center;
+      border: 1px solid #B91C1C;
+    }
+
+    .modal-content h2 {
+      font-size: 0.875rem;
+      color: #FEE2E2;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-content p {
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .modal-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: #FEE2E2;
+    }
+
+    .modal-button.confirm {
+      background: #B91C1C;
+    }
+
+    .modal-button.cancel {
+      background: #4B5563;
+    }
+
+    @media (max-width: 400px) {
+      .control-panel {
+        padding: 1rem;
+      }
+      .slider-container {
+        height: 46px;
+      }
+      .slider {
+        width: 70px;
+        height: 34px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="control-panel">
+    <h1>Emergency Deactivation</h1>
+    <p>Slide to disable all access codes.</p>
+    <div class="slider-container">
+      <div class="slider-track"></div>
+      <div class="slider" id="slider">Slide</div>
+    </div>
+  </div>
 
-  <button id="deactivate-btn">Deactivate All</button>
+  <div class="modal" id="confirm-modal">
+    <div class="modal-content">
+      <h2>Confirm Emergency Action</h2>
+      <p>Deactivate all codes? This is irreversible.</p>
+      <div class="modal-buttons">
+        <button class="modal-button cancel" id="cancel-btn">Cancel</button>
+        <button class="modal-button confirm" id="confirm-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const { createClient } = supabase;
@@ -44,43 +204,97 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtla2dxanJ1ZXlveGxhc2ZubmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyODA4MTYsImV4cCI6MjA1OTg1NjgxNn0.SXyJzx5N8AqxSSFD858y-cSB5wUH7mmC4oXluJlZA6g'
     );
 
-    const button = document.getElementById('deactivate-btn');
+    const slider = document.getElementById('slider');
+    const modal = document.getElementById('confirm-modal');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
 
-    button.addEventListener('click', async () => {
-      console.log('Button clicked. Starting deactivation...');
-      button.disabled = true;
-      button.textContent = 'Deactivating...';
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+
+    // Click to slide (for simplicity)
+    slider.addEventListener('click', () => {
+      if (!slider.classList.contains('disabled')) {
+        modal.style.display = 'flex';
+      }
+    });
+
+    // Drag functionality
+    slider.addEventListener('mousedown', startDragging);
+    slider.addEventListener('touchstart', startDragging);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag);
+    document.addEventListener('mouseup', stopDragging);
+    document.addEventListener('touchend', stopDragging);
+
+    function startDragging(e) {
+      if (slider.classList.contains('disabled')) return;
+      isDragging = true;
+      startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+      slider.style.transition = 'none';
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+      currentX = x - startX;
+      const maxX = slider.parentElement.offsetWidth - slider.offsetWidth - 12; // Account for padding
+      if (currentX >= 0 && currentX <= maxX) {
+        slider.style.transform = `translateX(${currentX}px)`;
+      }
+      if (currentX > maxX * 0.9) {
+        modal.style.display = 'flex';
+        stopDragging();
+      }
+    }
+
+    function stopDragging() {
+      isDragging = false;
+      slider.style.transition = 'transform 0.3s ease';
+      if (!modal.style.display === 'flex') {
+        slider.style.transform = 'translateX(0)';
+      }
+    }
+
+    cancelBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      slider.style.transform = 'translateX(0)';
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      modal.style.display = 'none';
+      slider.classList.add('slid', 'disabled');
+      slider.textContent = 'Deactivating...';
 
       try {
-        // Add a where clause to ensure it works correctly
         const { data, error } = await supa
           .from('access_codes')
           .update({ is_active: false })
-          .neq('is_active', false) // This ensures that only active codes are deactivated
+          .neq('is_active', false)
           .select();
 
-        console.log('Data returned:', data);
-        console.log('Error returned:', error);
-
         if (error) {
-          console.error('Error during update:', error);
-          alert('Update failed: ' + error.message);
-          button.disabled = false;
-          button.textContent = 'Deactivate All';
+          console.error('Error:', error);
+          alert(`Failed: ${error.message}`);
+          slider.classList.remove('slid', 'disabled');
+          slider.textContent = 'Slide';
+          slider.style.transform = 'translateX(0)';
         } else {
-          console.log('Update successful:', data);
           const count = data.length;
-          alert(`Success! Deactivated ${count} access codes.`);
-          button.textContent = `Deactivated ${count}`;
+          alert(`Emergency Deactivation Complete! ${count} codes disabled.`);
+          slider.textContent = `Deactivated ${count}`;
+          slider.style.background = '#22C55E'; /* Green */
         }
       } catch (err) {
         console.error('Unexpected error:', err);
-        alert('Unexpected error occurred. Check console.');
-        button.disabled = false;
-        button.textContent = 'Deactivate All';
+        alert('Unexpected error. Check console.');
+        slider.classList.remove('slid', 'disabled');
+        slider.textContent = 'Slide';
+        slider.style.transform = 'translateX(0)';
       }
     });
   </script>
-
 </body>
 </html>
