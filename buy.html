@@ -257,7 +257,7 @@
             <h2>Gen Q</h2>
             <p>Unlock your exams with ease.<br>Ensure exclusive access—only one user at a time. A unique code will be provided for each session.</p>
             <p><strong>Price:</strong> ₹70</p>
-<a href="payment.html" class="buy-now-button" onclick="changeButton(this)">Buy Now</a>
+            <a href="payment.html" class="buy-now-button" onclick="changeButton(this)">Buy Now</a>
         </div>
         <div class="code-card">
             <h2>Already Purchased? <br>Unlock the Code</h2>
@@ -338,205 +338,25 @@
             "retina_detect": true
         });
 
-        const code = `javascript:(async () => {   
-    const gsapScript = document.createElement('script');   
-    gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';   
-    document.head.appendChild(gsapScript);    
-
-    await new Promise(resolve => gsapScript.onload = resolve);    
-
-    const css = \`
-        #ask-bot-panel {       
-            position: fixed;       
-            bottom: 100px;       
-            right: 20px;       
-            width: 330px;       
-            background: rgba(255, 255, 255, 0.15);       
-            backdrop-filter: blur(10px);       
-            color: #000000;       
-            border-radius: .25em;       
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);       
-            z-index: 9999;       
-            font-family: 'Helvetica Neue','Helvetica','Segoe UI', Arial, sans-serif;       
-            transform: translateY(50px);       
-            opacity: 0;       
-            pointer-events: none;     
-        }     
-        #ask-bot-panel.show {       
-            pointer-events: auto;     
-        }     
-        #ask-bot-panel .response {       
-            padding: 1em;       
-            font-size: 1em;       
-            line-height: 1.4em;       
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);       
-            max-height: 200px;       
-            overflow-y: auto;       
-            white-space: pre-wrap;       
-            color: #000000;     
-        }     
-        #ask-bot-panel .copy-btn {       
-            background-color: rgba(0, 0, 0, 0.2);       
-            color: #000;       
-            font-size: 0.8em;       
-            border: none;       
-            border-radius: 0 0 .25em .25em;       
-            padding: 0.5em 1em;       
-            cursor: pointer;       
-            width: 100%;       
-            backdrop-filter: blur(5px);     
-        }     
-        #ask-bot-button {       
-            position: fixed;       
-            bottom: 20px;       
-            right: 20px;       
-            font-size: 0.8em;       
-            background-color: rgba(255, 255, 255, 0.1);       
-            color: #000;       
-            padding: .7em 1em;       
-            border-radius: .25em;       
-            margin-right: 1.25em;       
-            border: 1px solid rgba(0, 0, 0, 0.1);       
-            cursor: pointer;       
-            font-family: 'Helvetica Neue','Helvetica','Segoe UI', Arial, sans-serif;       
-            font-weight: 400;       
-            z-index: 9999;       
-            backdrop-filter: blur(8px);     
-        }     
-        #ask-bot-button:hover {       
-            background-color: rgba(255, 255, 255, 0.2);     
-        }     
-        #ask-bot-panel input {       
-            width: 100%;       
-            padding: 0.7em 1em;       
-            border: none;       
-            font-size: 1em;       
-            border-radius: 0;       
-            outline: none;       
-            font-family: inherit;       
-            box-sizing: border-box;       
-            border-top: 1px solid rgba(0,0,0,0.1);       
-            background: rgba(255,255,255,0.05);       
-            color: #000;       
-            backdrop-filter: blur(6px);     
-        }     
-        #message-banner {       
-            position: fixed;       
-            top: 20px;       
-            right: 20px;       
-            background: #000;       
-            color: #fff;       
-            padding: 0.8em 1.5em;       
-            border-radius: .5em;       
-            font-weight: bold;       
-            z-index: 9999;       
-            opacity: 0;       
-            transform: translateY(-30px);       
-            pointer-events: none;       
-            font-family: 'Segoe UI', sans-serif;     
-        }   
-    \`;   
-    const style = document.createElement('style');   
-    style.textContent = css;   
-    document.head.appendChild(style);    
-
-    const showMessage = (msg) => {     
-        let banner = document.getElementById('message-banner');     
-        if (!banner) {       
-            banner = document.createElement('div');       
-            banner.id = 'message-banner';       
-            document.body.appendChild(banner);     
-        }     
-        banner.textContent = msg;     
-        gsap.to(banner, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });     
-        setTimeout(() => {       
-            gsap.to(banner, { opacity: 0, y: -30, duration: 0.4, ease: 'power2.in' });     
-        }, 2500);   
-    };    
-
-    const panel = document.createElement('div');   
-    panel.id = 'ask-bot-panel';   
-    panel.innerHTML = \`
-        <div class="response">Only Premium Users Can Use this!<br>Have a promo code?<br>-Made by bCworks</div>     
-        <button class="copy-btn" style="display:none">Copy to Clipboard</button>     
-        <input type="text" placeholder="Enter code here..." id="code-check" />   
-    \`;   
-    document.body.appendChild(panel);    
-
-    const btn = document.createElement('button');   
-    btn.id = 'ask-bot-button';   
-    btn.textContent = 'Next';   
-    document.body.appendChild(btn);    
-
-.';         
-                copyBtn.style.display = 'none';          
-
-                try {           
-                    const { data, error } = await db             
-                        .from('qa_pairs')             
-                        .select('*')             
-                        .ilike('question', \`%\${value}%\`)             
-                        .limit(1);            
-
-                    if (error) {             
-                        response.textContent = 'Error: ' + error.message;           
-                    } else if (data.length === 0) {             
-                        response.textContent = 'No matching answer.';           
-                    } else {             
-                        response.textContent = 'Answer: ' + data[0].answer;             
-                        copyBtn.style.display = 'block';             
-                        gsap.fromTo(response, { backgroundColor: 'rgba(255,255,255,0.15)' }, { backgroundColor: '#e0f7ff', duration: 0.3, yoyo: true, repeat: 1 });           
-                    }         
-                } catch (err) {           
-                    response.textContent = 'Unexpected error: ' + err.message;         
-                }          
-
-                input.value = '';       
-            }     
-        });      
-
-        window.addEventListener('beforeunload', async () => {       
-            if (unlocked && currentCode) {         
-                await db.from('access_codes').update({ is_active: false }).eq('code', currentCode);       
-            }     
-        });   
-    };   
-    document.head.appendChild(supabaseScript); 
-})();`;
-
         const copyButton = document.querySelector('.copy-button');
 
         copyButton.addEventListener('click', () => {
-            navigator.clipboard.writeText(code).then(() => {
-                copyButton.textContent = 'Copied!';
-                copyButton.classList.add('visible');
-                setTimeout(() => {
-                    copyButton.textContent = 'Copy Code';
-                    copyButton.classList.remove('visible');
-                }, 2000);
-            });
+            window.location.href = "https://pastebin.com/raw/vtpyFtq2";
         });
     </script>
-   <script>
-  function changeButton(button) {
-    // Step 1: First click - change to "Processing..."
-    if (!button.classList.contains("stage-1")) {
-      button.textContent = "Processing...";
-      button.classList.add("stage-1");
-
-      // Step 2: After delay, change to "Verify"
-      setTimeout(() => {
-        button.textContent = "Verify";
-        button.classList.add("stage-2");
-      }, 2000); // delay in milliseconds (2 seconds)
-    }
-
-    // Step 3: Second click - redirect to wa.link
-    else if (button.classList.contains("stage-2")) {
-      window.location.href = "https://wa.link/lfrofq";
-    }
-  }
-</script>
-
+    <script>
+        function changeButton(button) {
+            if (!button.classList.contains("stage-1")) {
+                button.textContent = "Processing...";
+                button.classList.add("stage-1");
+                setTimeout(() => {
+                    button.textContent = "Verify";
+                    button.classList.add("stage-2");
+                }, 2000);
+            } else if (button.classList.contains("stage-2")) {
+                window.location.href = "https://wa.link/lfrofq";
+            }
+        }
+    </script>
 </body>
 </html>
