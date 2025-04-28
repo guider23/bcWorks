@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Deactivate All Access Codes</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f9f9;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      background-color: #0077ff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #005ec2;
+    }
+    button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="deactivate-btn">Deactivate All</button>
+
+  <script>
+    const { createClient } = supabase;
+
+    const supa = createClient(
+      'https://kekgqjrueyoxlasfnnhl.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtla2dxanJ1ZXlveGxhc2ZubmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyODA4MTYsImV4cCI6MjA1OTg1NjgxNn0.SXyJzx5N8AqxSSFD858y-cSB5wUH7mmC4oXluJlZA6g'
+    );
+
+    const button = document.getElementById('deactivate-btn');
+
+    button.addEventListener('click', async () => {
+      console.log('Button clicked. Starting deactivation...');
+      button.disabled = true;
+      button.textContent = 'Deactivating...';
+
+      try {
+        // Add a where clause to ensure it works correctly
+        const { data, error } = await supa
+          .from('access_codes')
+          .update({ is_active: false })
+          .neq('is_active', false) // This ensures that only active codes are deactivated
+          .select();
+
+        console.log('Data returned:', data);
+        console.log('Error returned:', error);
+
+        if (error) {
+          console.error('Error during update:', error);
+          alert('Update failed: ' + error.message);
+          button.disabled = false;
+          button.textContent = 'Deactivate All';
+        } else {
+          console.log('Update successful:', data);
+          const count = data.length;
+          alert(`Success! Deactivated ${count} access codes.`);
+          button.textContent = `Deactivated ${count}`;
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        alert('Unexpected error occurred. Check console.');
+        button.disabled = false;
+        button.textContent = 'Deactivate All';
+      }
+    });
+  </script>
+
+</body>
+</html>
