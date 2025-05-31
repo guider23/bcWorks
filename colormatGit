@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+  <script>
+    window.location.replace("https://github.com/guider23/custom_gf_ui");
+  </script>
+</head>
+<body>
+  <p>Redirecting... If not, <a href="https://github.com/guider23/custom_gf_ui">click here</a>.</p>
+</body>
+</html>
