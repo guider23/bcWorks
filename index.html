@@ -1,5 +1,8 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
+  /* bc 2025
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -11,45 +14,56 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: #000; /* fallback background */
+      background: #000;
+    }
+  /* bc 2025 */
+    /* Full blur overlay on top */
+    #blur-overlay {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 9999;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    #blur-overlay.fade-out {
+      opacity: 0;
     }
 
     spline-viewer {
       width: 100vw;
-      height: 120dvh; /* better for mobile than 100vh */
+      height: 120dvh;
       display: block;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
     }
 
-    /* Position the button container at the bottom center */
     .button-container {
       position: absolute;
       bottom: 5%;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10; /* Ensure buttons are above the Spline viewer */
+      z-index: 10;
       display: flex;
-      gap: 15px; /* Space between buttons */
+      gap: 15px;
     }
 
-    /* Minimalistic button without glow */
     .custom-button {
       padding: 10px 20px;
       font-size: 16px;
       font-family: Arial, sans-serif;
       font-weight: bold;
-      color: #FF69B4; /* Pink text to match the triangle */
+      color: #FF69B4;
       background: transparent;
-      border: 1px solid #FF69B4; /* Thin pink border */
+      border: 1px solid #FF69B4;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .custom-button:hover {
-      background-color: #FF69B4; /* Pink background on hover */
-      color: #1E2A44; /* Dark blue text on hover to match the background gradient */
+      background-color: #FF69B4;
+      color: #1E2A44;
     }
 
     @media (max-width: 768px) {
@@ -58,7 +72,7 @@
       }
 
       .button-container {
-        flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        flex-wrap: wrap;
         justify-content: center;
         gap: 10px;
       }
@@ -71,30 +85,38 @@
   </style>
 </head>
 <body>
+  <!-- Blurred overlay on top -->
+  <div id="blur-overlay"></div>
+
+  <!-- Main content -->
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.2/build/spline-viewer.js"></script>
   <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer>
 
-  <!-- Bottom-centered button row -->
   <div class="button-container">
     <a href="explore.html"><button class="custom-button">Explore</button></a>
   </div>
 
   <script>
-    // Remove the Spline logo periodically
+    // Blur overlay removal
+    window.addEventListener('load', () => {
+      const blur = document.getElementById('blur-overlay');
+      setTimeout(() => {
+        blur.classList.add('fade-out');
+        setTimeout(() => blur.remove(), 500); // remove after fade
+      }, 1000);
+    });
+  /* bc 2025 */
+    // Spline logo killer
     const removeLogo = () => {
       const el = document.querySelector('a#logo');
-      if (el) {
-        el.remove();
-        console.log('Spline logo removed');
-      }
+      if (el) el.remove();
     };
 
-    // Try early, then keep checking every second
     window.addEventListener('DOMContentLoaded', () => {
       removeLogo();
       setInterval(removeLogo, 1000);
     });
   </script>
-  <!-- Elfsight Button | Untitled Button -->
 </body>
 </html>
+<!--  using code without permission lead to violation of law  -->
