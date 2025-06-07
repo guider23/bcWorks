@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat UI - Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Ensure full viewport coverage */
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        /* Custom scrollbar for content area */
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-area::-webkit-scrollbar-track {
+            background: #202123;
+        }
+        .content-area::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 4px;
+        }
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+        /* Sidebar hover effect */
+        .topic-button:hover {
+            background-color: #343541;
+        }
+        /* Content area styling */
+        .content-area {
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .text-lg {
+            max-width: 70%;
+            margin: 0 auto;
+            text-align: left;
+            font-size: 1.125rem;
+            line-height: 1.6;
+        }
+        .topic-content {
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            padding: 16px;
+        }
+        /* Specific styling for BC Links topic to ensure iframe stretches fully */
+        #topic4.topic-content {
+            padding: 0;
+            overflow: hidden;
+        }
+        /* Smooth corners for image and code block */
+        .topic-image {
+            border-radius: 12px;
+            max-width: 70%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .code-block {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+            font-family: monospace;
+            font-size: 14px;
+            color: #d1d5db;
+            white-space: pre-wrap;
+            margin-top: 16px;
+            max-width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .copy-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #4a5568;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .copy-button:hover {
+            background-color: #718096;
+        }
+        /* Iframe styling for BC Links */
+        .bc-links-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+            display: block;
+        }
+        .iframe-fallback {
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 16px;
+        }
+        /* GitHub button styling */
+        .topic-content .github-button {
+            display: inline-flex;
+            align-items: center;
+            max-width: 70%;
+            margin: 0 auto 16px auto;
+            background-color: #4a5568;
+            color: white !important; /* Ensure text is white */
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            text-decoration: none !important; /* Remove underline */
+            transition: background-color 0.2s;
+        }
+        .topic-content .github-button:hover {
+            background-color: #718096;
+        }
+        .topic-content .github-button svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            fill: white;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: 100vh; /* Full height on mobile */
+                position: fixed;
+                top: 0;
+                left: -100%;
+                transition: left 0.3s ease-in-out;
+                z-index: 10;
+                padding-top: 48px; /* Prevent text overlaying back button */
+            }
+            .sidebar.open {
+                left: 0;
+            }
+            .content-area {
+                width: 100%;
+                height: 100vh;
+            }
+            .content-area-parent {
+                width: 100%;
+                height: 100vh;
+            }
+            .hamburger {
+                display: block;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 20;
+            }
+            .sidebar.open .hamburger {
+                display: none; /* Hide hamburger when sidebar is open */
+            }
+            .back-button {
+                display: none; /* Hidden by default */
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 20;
+                padding: 8px;
+            }
+            .sidebar.open .back-button {
+                display: block; /* Show back button when sidebar is open */
+            }
+            .topic-content {
+                height: 100%;
+            }
+            .bc-links-iframe {
+                height: 100%;
+            }
+        }
+        @media (min-width: 769px) {
+            .hamburger, .back-button {
+                display: none;
+            }
+            .sidebar {
+                width: 256px;
+            }
+            .content-area {
+                width: 100%;
+                height: 100vh;
+            }
+            .content-area-parent {
+                width: calc(100% - 256px);
+                height: 100vh;
+            }
+        }
+        /* Additional styles for topic1 content */
+        .badge-container {
+            max-width: 70%;
+            margin: 0 auto 16px auto;
+            text-align: center;
+        }
+        .badge-container img {
+            margin: 0 4px;
+        }
+        .topic-content h1 {
+            max-width: 70%;
+            margin: 16px auto;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .topic-content h2 {
+            max-width: 70%;
+            margin: 16px auto;
+            text-align: left;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .topic-content ul {
+            max-width: 70%;
+            margin: 16px auto;
+            text-align: left;
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .topic-content p strong {
+            font-weight: bold;
+        }
+        .topic-content a:not(.github-button) {
+            color: #3b82f6; /* Tailwind's blue-500 for other links */
+            text-decoration: underline;
+        }
+        .topic-content a:not(.github-button):hover {
+            color: #60a5fa; /* Tailwind's blue-400 */
+        }
+        /* Welcome message styling */
+        .welcome-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d1d5db;
+            max-width: 70%;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col md:flex-row h-screen">
+    <!-- Hamburger Menu for Mobile -->
+    <button class="hamburger p-2 md:hidden" onclick="toggleSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+    </button>
+    <!-- Back Button for Mobile -->
+    <button class="back-button p-2 md:hidden" onclick="toggleSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+    <!-- Sidebar -->
+    <div class="sidebar w-64 bg-[#000000] flex flex-col">
+        <!-- Topic List -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="p-2">
+                <button onclick="showContent('topic1')" class="topic-button w-full text-left p-3 text-sm rounded-lg mb-1 cursor-pointer hover:bg-[#343541] focus:bg-[#343541]">
+                    Gen Q
+                </button>
+                <button onclick="showContent('topic2')" class="topic-button w-full text-left p-3 text-sm rounded-lg mb-1 cursor-pointer hover:bg-[#343541] focus:bg-[#343541]">
+                    Color Mat
+                </button>
+                <button onclick="showContent('topic3')" class="topic-button w-full text-left p-3 text-sm rounded-lg mb-1 cursor-pointer hover:bg-[#343541] focus:bg-[#343541]">
+                    Canva Hub
+                </button>
+                <button onclick="showContent('topic4')" class="topic-button w-full text-left p-3 text-sm rounded-lg mb-1 cursor-pointer hover:bg-[#343541] focus:bg-[#343541]">
+                    BC Links
+                </button>
+                <button onclick="showContent('topic5')" class="topic-button w-full text-left p-3 text-sm rounded-lg mb-1 cursor-pointer hover:bg-[#343541] focus:bg-[#343541]">
+                    BC Shield
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Main Content Area -->
+    <div class="flex-1 content-area-parent">
+        <!-- Content Display -->
+        <div id="content-area" class="content-area bg-[#202123]">
+            <!-- Welcome Message -->
+            <div id="welcome" class="welcome-message">
+                Hey there, Choose any product from left sidebar to explore
+            </div>
+            <!-- Content Display -->
+            <div id="topic1" class="topic-content hidden">
+                <center>
+                    <a href="https://github.com/dummy/topic1" class="github-button">
+                        <svg viewBox="0 0 16 16" class="github-icon">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </center>
+                <h1>INJECTION (GEN Q)</h1>
+                <p class="text-lg"><strong>💡 Your Personal, Secure, Floating Exam Bot</strong></p>
+                <p class="text-lg">Welcome to (Gen Q), a smart floating exam assistant bot designed to help you to answer specific, approved questions during online exams. It's lightweight, protected, and highly customizable.</p>
+                <h2>🚀 Live Demo</h2>
+                <p class="text-lg">👉 <a href="https://guider23.github.io/ngpit663/">Click here to try it now</a></p>
+                <h2>🔒 Secure Usage</h2>
+                <ul>
+                    <li>❗ The Ask Bot is <strong>protected by an access code</strong>.</li>
+                    <li>📧 To get your personal code, contact: <a href="mailto:sofiyasenthilkumar@gmail.com">sofiyasenthilkumar@gmail.com</a></li>
+                    <li>🧠 The bot <strong>only responds to questions</strong> available in its internal database.</li>
+                    <li>🔁 Prevents <strong>tab switching</strong>, ensuring an exam-focused environment.</li>
+                    <li>💰 This tool is <strong>not free</strong>. Usage costs ₹70, and using access codes without permission is a <strong>violation of terms and may lead to legal consequences</strong>.</li>
+                </ul>
+                <h2>🧠 Features</h2>
+                <ul>
+                    <li>✅ Floating Ask Bot (non-intrusive design)</li>
+                    <li>🔐 Code-based Access System</li>
+                    <li>📚 Responds only to pre-approved questions</li>
+                    <li>🖥️ Tab switch restriction for online exam integrity</li>
+                    <li>📦 Ready to embed on <strong>any webpage</strong></li>
+                </ul>
+                <h2>📥 Upload Your Own Questions</h2>
+                <p class="text-lg">Want to personalize your bot with custom questions?</p>
+                <p class="text-lg">Upload at 👉 <a href="https://github.com/guider23/ngpit663_qportal">Question Portal Repo</a></p>
+                <h2>🧩 Embeddable JS</h2>
+                <p class="text-lg">You can even embed this bot into any site using the provided JavaScript file.</p>
+                <p class="text-lg">DM or mail if you need help integrating it into your own site or system.</p>
+                <h2>📧 Contact</h2>
+                <p class="text-lg"><a href="mailto:sofiyasenthilkumar@gmail.com">sofiyasenthilkumar@gmail.com</a> for access code or support queries.</p>
+                <h2>🛠️ Developer Note</h2>
+                <p class="text-lg">This project is built by and for self-use, but open for community contribution if you'd like to extend it or deploy your own version.</p>
+                <p class="text-lg">Made by <strong>siddarth</strong></p>
+                <h2>📄 License</h2>
+                <p class="text-lg">All Rights Reserved. This code may not be used, copied, modified, or distributed without the express written permission of the copyright holder.</p>
+            </div>
+            <div id="topic2" class="topic-content hidden">
+                <center>
+                    <a href="https://github.com/guider23/custom_gf_ui" class="github-button">
+                        <svg viewBox="0 0 16 16" class="github-icon">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </center>
+                <h1>COLOR MAT</h1>
+                <center>
+                    <img src="https://github.com/user-attachments/assets/d7d48a38-1e10-4e08-ab90-26ee56f878f3" alt="Color Mat Logo" class="topic-image" style="width: 300px;">
+                </center>
+                <p class="text-lg">Open Color Mat <a href="https://bcworks.in.net/colormat">https://bcworks.in.net/colormat</a></p>
+                <br>
+                <p class="text-lg">A brief instruction is given in deploy link check out <a href="https://bcworks.in.net/colormat">https://bcworks.in.net/colormat</a></p>
+                <p class="text-lg">Welcome to the <strong>Color Mat</strong>, a cutting-edge web app that transforms Google Forms into sleek, customizable forms with a <strong>cyberpunk-inspired UI</strong>. Generate dynamic forms, validate inputs in real-time, and deploy to Vercel with a single click—all wrapped in a neon-drenched, futuristic interface.</p>
+                <h2>✨ Features</h2>
+                <ul>
+                    <li>Dynamic Form Creation: Generate custom forms from Google Form links and JSON data in seconds.</li>
+                    <li>Real-Time Validation: Instantly validates form URLs and JSON with clear, user-friendly feedback.</li>
+                    <li>One-Click Vercel Deployment: Host your forms on Vercel and track deployment history effortlessly.</li>
+                    <li>Cyberpunk Aesthetic: Neon gradients, particle animations, and 3D tilt effects powered by GSAP and Vanilla Tilt.</li>
+                    <li>JSON Extraction: Built-in code snippet to extract form fields directly from Google Forms.</li>
+                    <li>Responsive & Accessible: Glassmorphic UI optimized for all devices with keyboard navigation support.</li>
+                    <li>Deployment History: View and copy past deployment URLs via an intuitive history panel.</li>
+                </ul>
+                <h2>🛠 Installation</h2>
+                <p class="text-lg">Get started in minutes:</p>
+                <p class="text-lg">Clone the repo:</p>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                    git clone https://github.com/guider23/custom_gf_ui.git
+                </div>
+                <p class="text-lg">Navigate to the project directory:</p>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                    cd custom_gf_ui
+                </div>
+                <p class="text-lg">Serve locally (requires Node.js): </p>
+                <div class="code-block">
+                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                    npm install -g live-server
+                    live-server
+                </div>
+                <p class="text-lg">Or open <code>index.html</code> directly in a browser.</p>
+                <h2>📖 Usage</h2>
+                <h3 class="text-lg">Extract JSON:</h3>
+                <ol>
+                    <p class="text-lg">Open the help popup (<code>?</code> button) and copy the JSON extraction code.</p>
+                    <p class="text-lg">Paste it into your Google Form’s browser console to get the form’s field data.</p>
+                </ol>
+                <h3 class="text-lg">Generate Form:</h3>
+                <ol>
+                    <p class="text-lg">Paste your Google Form link and extracted JSON into the input fields.</p>
+                    <p class="text-lg">Click <strong>"Generate Form"</strong> to create a custom form with matching fields.</p>
+                </ol>
+                <h3 class="text-lg">Deploy:</h3>
+                <ol>
+                    <p class="text-lg">Hit the <strong>"Deploy"</strong> button to host your form on Vercel.</p>
+                    <p class="text-lg">Access the deployment URL in the history panel (<code>📜</code> button).</p>
+                </ol>
+                <h3 class="text-lg">Submit:</h3>
+                <ol>
+                    <p class="text-lg">Fill out the generated form and submit data directly to your Google Form.</p>
+                </ol>
+                <p class="text-lg">For detailed instructions, refer to the help popup.</p>
+                <h2>🔧 Tech Stack</h2>
+                <table class="max-w-[70%] mx-auto text-left">
+                    <tr>
+                        <th class="p-2">Technology</th>
+                        <th class="p-2">Purpose</th>
+                    </tr>
+                    <tr>
+                        <td class="p-2">HTML5/CSS3/JS</td>
+                        <td class="p-2">Core structure, styling, and logic</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">GSAP</td>
+                        <td class="p-2">Smooth animations</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Vanilla Tilt</td>
+                        <td class="p-2">3D tilt effects for interactivity</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">JSZip</td>
+                        <td class="p-2">File generation for deployment</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Vercel API</td>
+                        <td class="p-2">Seamless form hosting</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Orbitron/Roboto Mono</td>
+                        <td class="p-2">Cyberpunk-inspired typography</td>
+                    </tr>
+                </table>
+                <h2>🤝 Contributing</h2>
+                <p class="text-lg">Contributions are welcome! To contribute:</p>
+                <ol>
+                    <li class="text-lg">Fork the repository.</li>
+                    <p class="text-lg">Create a feature branch:</p>
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        git checkout -b feature/awesome-feature
+                    </div>
+                    <p class="text-lg">Commit your changes:</p>
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        git commit -m 'Add awesome feature'
+                    </div>
+                    <p class="text-lg">Push to the branch:</p>
+                    <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        git push origin feature/awesome-feature
+                    </div>
+                    <p class="text-lg">Open a Pull Request.</p>
+                </ol>
+                <p class="text-lg">Please follow the <strong>Code of Conduct</strong> and ensure your code adheres to the project’s style guide.</p>
+                <h2>📄 License</h2>
+                <p class="text-lg">This project is licensed under the <strong>MIT License</strong>.</p>
+                <h2>🙌 Credits</h2>
+                <p class="text-lg">Crafted by <strong>siddarth</strong></p><br>
+                <p class="text-lg">⭐ <strong>Star this repo</strong> if you found it useful!</p>
+                <p class="text-lg">Got questions? Open an issue or reach out on <a href="https://github.com/guider23/custom_gf_ui">GitHub</a>.</p>
+            </div>
+            <div id="topic3" class="topic-content hidden">
+                <div class="flex justify-center mb-4">
+                    <a href="https://github.com/guider23/canvaHub" class="github-button">
+                        <svg viewBox="0 0 16 16" class="github-icon">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+                <h1>CANVA HUB</h1>
+                <div class="flex justify-center mb-4">
+                    <img src="https://github.com/user-attachments/assets/de264ba7-7ca7-4931-bb75-443c866c4fc0" alt="Color Mat Logo" class="topic-image" style="width: 300px;">
+                </div>
+                <p class="text-lg">Bypass Canva Pro restrictions and unlock access to their premium stock image library with this powerful Chrome extension.</p>
+                <h2>Features</h2>
+                <ul>
+                    <li class="text-lg">Easy Image Extraction: Seamlessly extract images from Canva.</li>
+                    <li class="text-lg">Premium Access: Unlock and download images typically restricted to Canva Pro users.</li>
+                    <li class="text-lg">Bypass Restrictions: Navigate around Canva's paywalls for image access.</li>
+                    <li class="text-lg">User-Friendly Interface: Simple and intuitive extension popup for quick actions.</li>
+                </ul>
+                <h2>Installation</h2>
+                <p class="text-lg">Get started with the following steps:</p>
+                <ol>
+                    <li class="text-lg">Download the Extension:</li>
+                    <ul class="ml-5 list-disc">
+                        <li class="text-lg">Clone this repository or download the ZIP file and unzip it to a local folder.</li>
+                    </ul>
+                    <li class="text-lg">Open Chrome Extensions:</li>
+                    <ul class="ml-5 list-disc">
+                        <li class="text-lg">Open Google Chrome.</li>
+                        <li class="text-lg">Navigate to <code>chrome://extensions</code>.</li>
+                    </ul>
+                    <li class="text-lg">Enable Developer Mode:</li>
+                    <ul class="ml-5 list-disc">
+                        <li class="text-lg">In the top right corner of the Extensions page, toggle the "Developer mode" switch to the on position.</li>
+                    </ul>
+                    <li class="text-lg">Load the Extension:</li>
+                    <ul class="ml-5 list-disc">
+                        <li class="text-lg">Click the "Load unpacked" button that appears.</li>
+                        <li class="text-lg">Select the <code>canva-image-extractor</code> directory (the folder where you unzipped or cloned the files).</li>
+                    </ul>
+                    <li class="text-lg">The <strong>bC Works Canva Hub</strong> extension icon should now appear in your Chrome toolbar.</li>
+                </ol>
+                <h2>How to Use</h2>
+                <ol>
+                    <li class="text-lg">Navigate to a Canva design page.</li>
+                    <li class="text-lg">Click on the <strong>bC Works Canva Hub</strong> extension icon in your Chrome toolbar.</li>
+                    <li class="text-lg">The extension will attempt to identify and extract images.</li>
+                    <li class="text-lg">Follow the prompts within the extension popup to download the desired images.</li>
+                </ol>
+                <p class="text-lg"><em>(Detailed usage instructions for specific functionalities can be added here as the extension evolves.)</em></p>
+                <h2>Disclaimer</h2>
+                <p class="text-lg">This extension is intended for personal and educational purposes only. Users should be aware of Canva's Terms of Service and use this tool responsibly. The developers of this extension are not responsible for any misuse or copyright infringements.</p>
+                <h2>Contributing</h2>
+                <p class="text-lg">Contributions are welcome! If you have suggestions for improvements or encounter any bugs, please feel free to:</p>
+                <ul>
+                    <li class="text-lg">Open an issue on the <a href="https://github.com/guider23/canvaHub">GitHub repository</a>.</li>
+                    <li class="text-lg">Fork the repository and submit a pull request.</li>
+                </ul>
+                <p class="text-lg">We appreciate your help in making this tool better!</p>
+            </div>
+            <div id="topic4" class="topic-content hidden">
+                <div class="flex justify-center mb-4">
+                    <a href="https://github.com/dummy/topic4" class="github-button">
+                        <svg viewBox="0 0 16 16" class="github-icon">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+                <iframe
+                    class="bc-links-iframe"
+                    src="https://bcworks.in.net/landingpagebclinks.html"
+                    title="BC Links"
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                    loading="lazy"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                </iframe>
+                <div class="iframe-fallback" style="display: none;">
+                    Unable to load BC Links. The content may be restricted from being displayed in a frame. Please visit <a href="https://bcworks.in.net/landingpagebclinks.html" target="_blank" class="text-blue-400 underline">BC Links</a> directly.
+                </div>
+            </div>
+            <div id="topic5" class="topic-content hidden">
+                <div class="flex justify-center mb-4">
+                    <a href="https://github.com/dummy/topic5" class="github-button">
+                        <svg viewBox="0 0 16 16" class="github-icon">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+                <h1>BC SHIELD</h1>
+
+                <p class="text-lg">BC Shield is an all-in-one, lightweight JavaScript security script designed to protect your web pages from common threats and unwanted interactions. It provides runtime protections such as:
+
+                    Blocking your site from being embedded inside iframes (preventing clickjacking),
+                    Detecting and blocking access when Developer Tools are open (to prevent code tampering or inspection),
+                    Bot traps to detect automated form submissions,
+                    Disabling right-click and common copy/paste keyboard shortcuts to prevent content theft,
+                    A sanitizer utility to clean input strings from malicious characters.</p>
+                    <br>
+                    
+                    <p class="text-lg">BC Shield is not free it requires subscription activation to ensure it works on your sites.<br><br>
+
+                        BC Shield runs entirely on the client side without dependencies, injecting necessary CSS and safeguards dynamically, giving you a simple, configurable layer of protection — all packed inside a single self-contained JavaScript file.
+                       <br> <br>Add the following script tag to your HTML file, ideally before the closing </body> tag or inside the <head> section:
+
+                    </p>
+                <div class="code-block mt-4">
+                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/(PIN)/bcshield@yourdomain/bc-shield.js" defer&gt;&lt;/script&gt;</code></pre>
+
+                </div>
+
+            </div>
+        </div>
+        <script>
+            let badges = []; // Store badge elements to manage their lifecycle
+        
+            function showContent(topicId) {
+                // Hide all content, including welcome message
+                document.querySelectorAll('.topic-content, .welcome-message').forEach(content => {
+                    content.classList.add('hidden');
+                });
+        
+                // Show selected topic content
+                document.getElementById(topicId).classList.remove('hidden');
+        
+                // Remove all existing badges
+                badges.forEach(badge => badge.remove());
+                badges = [];
+        
+                // Add badges based on topicId
+                let topOffset = 12; // Starting position for badges
+                if (topicId === 'topic1') {
+                    // Deprecated badge for Topic 1
+                    const deprecatedBadge = document.createElement('div');
+                    deprecatedBadge.textContent = 'Deprecated';
+                    Object.assign(deprecatedBadge.style, {
+                        position: 'fixed',
+                        top: `${topOffset}px`,
+                        right: '12px',
+                        background: 'linear-gradient(to bottom, #555, #222)',
+                        color: '#fff',
+                        padding: '3px 10px',
+                        fontSize: '12px',
+                        fontFamily: 'Segoe UI, sans-serif',
+                        borderRadius: '999px',
+                        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.3)',
+                        zIndex: '9999',
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                        fontWeight: 'bold',
+                        transform: 'scale(0.95)',
+                        letterSpacing: '0.5px',
+                    });
+                    document.body.appendChild(deprecatedBadge);
+                    badges.push(deprecatedBadge);
+                } else if (['topic2', 'topic3', 'topic4'].includes(topicId)) {
+                    // Open Source badge for Topics 2, 3, and 4
+                    const openSourceBadge = document.createElement('div');
+                    openSourceBadge.textContent = 'Open Source';
+                    Object.assign(openSourceBadge.style, {
+                        position: 'fixed',
+                        top: `${topOffset}px`,
+                        right: '12px',
+                        background: 'linear-gradient(to bottom, #4CAF50, #2E7D32)',
+                        color: '#fff',
+                        padding: '3px 10px',
+                        fontSize: '12px',
+                        fontFamily: 'Segoe UI, sans-serif',
+                        borderRadius: '999px',
+                        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3), 0 2px 5px rgba(0,0,0,0.2)',
+                        zIndex: '9999',
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                        fontWeight: 'bold',
+                        transform: 'scale(0.95)',
+                        letterSpacing: '0.5px',
+                    });
+                    document.body.appendChild(openSourceBadge);
+                    badges.push(openSourceBadge);
+                } else if (topicId === 'topic5') {
+                    // Paid badge for Topic 5
+                    const paidBadge = document.createElement('div');
+                    paidBadge.textContent = 'Paid';
+                    Object.assign(paidBadge.style, {
+                        position: 'fixed',
+                        top: `${topOffset}px`,
+                        right: '12px',
+                        background: 'linear-gradient(to bottom, #ff4d4d, #cc0000)',
+                        color: '#fff',
+                        padding: '3px 8px',
+                        fontSize: '12px',
+                        fontFamily: 'Segoe UI, sans-serif',
+                        borderRadius: '999px',
+                        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3), 0 2px 5px rgba(0,0,0,0.2)',
+                        zIndex: '9999',
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                        fontWeight: 'bold',
+                        transform: 'scale(0.95)',
+                        letterSpacing: '0.5px',
+                    });
+                    document.body.appendChild(paidBadge);
+                    badges.push(paidBadge);
+                }
+        
+                // Close sidebar on mobile after selection
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('open');
+                }
+            }
+        
+            function toggleSidebar() {
+                document.querySelector('.sidebar').classList.toggle('open');
+            }
+        
+            function copyCode(button) {
+                const code = button.parentElement.textContent.replace('Copy', '').trim();
+                navigator.clipboard.writeText(code).then(() => {
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                    }, 2000);
+                });
+            }
+        </script>
+</body>
+</html>
