@@ -80,6 +80,23 @@
       }
     }
   </style>
+  <script>
+  (function() {
+    // define your breakpoints (in pixels)
+    const MOBILE_MAX = 768;
+    const TABLET_MAX = 1024;
+
+    // get current viewport width
+    const w = window.innerWidth || document.documentElement.clientWidth;
+
+    // if it’s mobile or tablet, redirect
+    if (w <= TABLET_MAX) {
+      // use location.replace so it doesn’t clutter the back-button history
+      location.replace('https://bcworks.in.net/explore.html');
+    }
+  })();
+</script>
+
 </head>
 <body>
   <!-- Blurred overlay on top -->
@@ -114,5 +131,6 @@
       setInterval(removeLogo, 1000);
     });
   </script>
+  
 </body>
 </html>
