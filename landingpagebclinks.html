@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BC Links</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #blur-wrapper {
+      filter: blur(5px);
+      transition: filter 0.5s ease;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      z-index: 0;
+    }
+
+    #blur-wrapper.unblur {
+      filter: blur(0);
+    }
+
+    spline-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 120vh;
+      border: none;
+      z-index: 1;
+    }
+
+    #header-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      text-align: center;
+      color: white;
+      user-select: none;
+    }
+
+    #header {
+      font-size: 4rem;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeIn 0s ease forwards;
+    }
+
+    #tagline {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-top: 10px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 0.5s;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(45deg, #1e90ff, #ff007a);
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: linear-gradient(45deg, #ff007a, #1e90ff);
+      box-shadow: 0 0 20px rgba(255, 0, 122, 0.5);
+      transform: scale(1.05);
+    }
+
+    #fallback-message {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 1.5rem;
+      z-index: 2;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      #header {
+        font-size: 2.5rem;
+      }
+      #tagline {
+        font-size: 1rem;
+      }
+      .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      #header-container {
+        top: 60%;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="blur-wrapper">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.2/build/spline-viewer.js"></script>
+
+    <spline-viewer
+      id="splineScene"
+      url="https://prod.spline.design/VNwhDB5JVrvQsff5/scene.splinecode">
+    </spline-viewer>
+
+    <div id="fallback-message">
+      Unable to load 3D scene. Please refresh or check your connection.
+    </div>
+
+    <div id="header-container">
+      <div id="header">BC LINKS</div>
+      <a href="https://bcworks.in.net/bclinks" class="btn" target="_blank">Visit</a>
+    </div>
+  </div>
+
+  <script>
+    const viewer = document.getElementById('splineScene');
+    const blurWrapper = document.getElementById('blur-wrapper');
+    const fallbackMessage = document.getElementById('fallback-message');
+
+    // Remove blur after 1 second
+    setTimeout(() => {
+      blurWrapper.classList.add('unblur');
+    }, 1000);
+
+    // Remove blur when scene loads
+    viewer.addEventListener('scene-loaded', () => {
+      blurWrapper.classList.add('unblur');
+    });
+
+    // Show fallback message if scene fails to load after 5 seconds
+    setTimeout(() => {
+      if (!blurWrapper.classList.contains('unblur')) {
+        fallbackMessage.style.display = 'block';
+      }
+    }, 5000);
+  </script>
+</body>
+</html>
