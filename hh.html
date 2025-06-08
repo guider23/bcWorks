@@ -4,33 +4,20 @@
     <meta charset="UTF-8">
 <!--     <script src="https://cdn.jsdelivr.net/gh/guider23/bcshield@bcworks/bc-shield.js"></script> -->
     <script>/**
+/**
  * bc-shield.js
- * Version: 1.0
+ * Version: 2025-updated-devtools-enhanced
  * All-in-one self-contained protection script (BC Shield)
  */
-
 (function () {
-  // ─── Domain Lock ────────────────────────────────────────────────
-  const allowedDomains = ['bcworks.in.net'];
-  const currentDomain = window.location.hostname;
-
-  if (!allowedDomains.some(domain => currentDomain.endsWith(domain))) {
-    document.body.innerHTML = `
-      <div style="font-family: sans-serif; text-align: center; padding: 5rem;">
-        <h1 style="color: red;">❌ Access Denied</h1>
-        <p>This copy of <strong>BC Shield</strong> is restricted to <code>bcworks.in.net</code></p>
-      </div>
-    `;
-    throw new Error("BC Shield: Unauthorized domain");
-  }
-
   // ─── Config ──────────────────────────────────────────────────────
   const config = Object.assign({
     devtools: true,
     iframe: true,
     trap: true,
     antiCopy: true,
-    sanitizer: true
+    sanitizer: true,
+    allowedScriptDomain: 'bcworks.in.net'
   }, window.BCShieldConfig || {});
 
   const isDebug = location.search.includes('debug');
@@ -45,7 +32,13 @@
       font-family: 'Arial', sans-serif;
       color: #333;
       text-align: center;
-      z-index: 9999;
+      z-index: 9999999;
+      background: #fff5f5;
+      border: 2px solid #dc3545;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(220, 53, 69, 0.7);
+      user-select: none;
     }
     #bcshield-warning-container .icon {
       font-size: 2.5rem;
@@ -75,16 +68,21 @@
   document.head.appendChild(styleTag);
 
   // ─── Helper: Render Block Message ────────────────────────────────
+  let blockShown = false;
   function renderBlock(title, message) {
-    document.body.innerHTML = `
-      <div id="bcshield-warning-container">
-        <div class="bc-shield-warning">
-          <div class="icon">⚠️</div>
-          <h1>${title}</h1>
-          <p>${message}</p>
+    if (!blockShown) {
+      blockShown = true;
+      document.body.innerHTML = `
+        <div id="bcshield-warning-container">
+          <div class="bc-shield-warning">
+            <div class="icon">⚠️</div>
+            <h1>${title}</h1>
+            <p>${message}</p>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+      console.warn(`[BC Shield] Blocked: ${title} - ${message}`);
+    }
   }
 
   // ─── Iframe Block ────────────────────────────────────────────────
@@ -93,20 +91,53 @@
     throw new Error("BC Shield: Blocked in iframe.");
   }
 
-  // ─── Devtools Detection ──────────────────────────────────────────
+  // ─── Enhanced Devtools & Console Injection Detection ─────────────
   if (config.devtools) {
-    let triggered = false;
-    setInterval(() => {
+    let devtoolsOpen = false;
+    let lastCheck = Date.now();
+
+    // Check function using multiple heuristics
+    function detectDevtools() {
+      // Check window size differences
       const widthDiff = window.outerWidth - window.innerWidth;
       const heightDiff = window.outerHeight - window.innerHeight;
-      const devtoolsOpen = widthDiff > 180 || heightDiff > 180 || window.innerHeight < 400;
+      const smallHeight = window.innerHeight < 400;
+      const sizeBasedOpen = widthDiff > 180 || heightDiff > 180 || smallHeight;
 
-      if (devtoolsOpen && !triggered) {
-        triggered = true;
-        renderBlock("Access Blocked", "Developer Tools are open. Access is blocked by BC SHIELD.");
-        console.warn("⚠️ Devtools detected by BC Shield");
+      // Detect devtools by measuring time for debugger keyword execution (slowdown)
+      let detectedByDebugger = false;
+      const start = performance.now();
+      debugger;
+      const duration = performance.now() - start;
+      if (duration > 100) detectedByDebugger = true;
+
+      // Detect devtools by testing toString override on console.log
+      let detectedByOverride = false;
+      const devtoolsTest = /./;
+      devtoolsTest.toString = function () {
+        detectedByOverride = true;
+        return '';
+      };
+      console.log('%c', devtoolsTest);
+
+      // If any detection triggered
+      return sizeBasedOpen || detectedByDebugger || detectedByOverride;
+    }
+
+    function checkDevtoolsLoop() {
+      if (!devtoolsOpen && detectDevtools()) {
+        devtoolsOpen = true;
+        renderBlock("Access Blocked", "Developer Tools or Console access detected. Access is blocked by BC SHIELD.");
+        console.warn("⚠️ Devtools or Console detected by BC Shield");
       }
-    }, 1000);
+      if (!devtoolsOpen) {
+        // Run frequently for fast detection
+        requestAnimationFrame(checkDevtoolsLoop);
+      }
+    }
+
+    // Start checking immediately
+    checkDevtoolsLoop();
   }
 
   // ─── Bot Trap ────────────────────────────────────────────────────
@@ -117,6 +148,7 @@
         if (trapInput && trapInput.value) {
           e.preventDefault();
           alert("Bot detected by BC SHIELD.");
+          console.warn("BC Shield: Bot trap triggered.");
         }
       });
     });
@@ -140,8 +172,91 @@
     };
   }
 
+  // ─── Utility: Remove inline event handlers on an element ─────────
+  function removeInlineEventHandlers(el) {
+    const events = ['onclick', 'onerror', 'onload', 'onmouseover', 'onmouseenter', 'onmouseleave', 'onkeyup', 'onkeydown', 'onchange', 'onsubmit', 'onfocus', 'onblur'];
+    let removed = false;
+    events.forEach(evt => {
+      if (el.hasAttribute(evt)) {
+        el.removeAttribute(evt);
+        removed = true;
+        if (isDebug) console.log(`[BC Shield] Removed inline event handler ${evt} on`, el);
+      }
+    });
+    return removed;
+  }
+
+  // ─── Utility: Check and remove suspicious scripts ────────────────
+  function sanitizeScriptElement(script) {
+    if (script.src) {
+      try {
+        const url = new URL(script.src);
+        if (!url.hostname.endsWith(config.allowedScriptDomain)) {
+          script.remove();
+          renderBlock("Access Blocked", "External scripts from untrusted sources are blocked by BC SHIELD.");
+          console.warn(`[BC Shield] Removed external script with src: ${script.src}`);
+          return true;
+        }
+      } catch {
+        script.remove();
+        renderBlock("Access Blocked", "Invalid script source blocked by BC SHIELD.");
+        console.warn(`[BC Shield] Removed script with invalid src: ${script.src}`);
+        return true;
+      }
+    } else {
+      script.remove();
+      renderBlock("Access Blocked", "Inline scripts are blocked by BC SHIELD.");
+      console.warn("[BC Shield] Removed inline script");
+      return true;
+    }
+    return false;
+  }
+
+  // ─── MutationObserver: Monitor live DOM changes ─────────────────
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (!(node instanceof HTMLElement)) return;
+
+        if (removeInlineEventHandlers(node)) {
+          console.warn("[BC Shield] Removed inline event handler on newly added node", node);
+        }
+
+        node.querySelectorAll('*').forEach(child => {
+          if (removeInlineEventHandlers(child)) {
+            console.warn("[BC Shield] Removed inline event handler on child node", child);
+          }
+        });
+
+        if (node.tagName === 'SCRIPT') {
+          sanitizeScriptElement(node);
+        } else {
+          node.querySelectorAll('script').forEach(s => sanitizeScriptElement(s));
+        }
+      });
+
+      if (mutation.type === 'attributes' && mutation.target instanceof HTMLElement) {
+        if (removeInlineEventHandlers(mutation.target)) {
+          console.warn("[BC Shield] Removed inline event handler on attribute change", mutation.target);
+        }
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['onclick', 'onerror', 'onload', 'onmouseover', 'onmouseenter', 'onmouseleave', 'onkeyup', 'onkeydown', 'onchange', 'onsubmit', 'onfocus', 'onblur']
+  });
+
+  // ─── Initial scan on page load ────────────────────────────────
+  document.querySelectorAll('script').forEach(s => sanitizeScriptElement(s));
+  document.querySelectorAll('*').forEach(el => removeInlineEventHandlers(el));
+
   if (isDebug) console.log("[BC Shield] Loaded with config:", config);
 })();
+
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
