@@ -3,78 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>No Watermark Zone</title>
-<script>
-(function () {
-  const allowedDomain = 'bcworks.in.net';
-  const currentDomain = window.location.hostname;
 
-  if (!currentDomain.endsWith(allowedDomain)) {
-    console.warn('[🔒 Domain Lock] Unauthorized domain:', currentDomain);
-    return;
-  }
-
-  // Begin Spline watermark remover
-  (function removeSplineWatermark() {
-    // Check if element is Spline watermark
-    const isSplineWatermark = (el) => {
-      return (
-        el.tagName === 'A' &&
-        el.id === 'logo' &&
-        /spline\.design/.test(el.href || '') &&
-        el.querySelector('svg')
-      );
-    };
-
-    const cleanSpline = () => {
-      document.querySelectorAll('a').forEach(a => {
-        if (isSplineWatermark(a)) {
-          console.log('[🧼 Removed Spline Watermark]', a);
-          a.remove();
-        }
-      });
-    };
-
-    // Catch delayed load
-    setInterval(cleanSpline, 300);
-
-    // Watch for DOM additions
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === 1) {
-            if (isSplineWatermark(node)) {
-              console.log('[🔍 Observer Removed Spline Watermark]', node);
-              node.remove();
-            }
-
-            if (node.querySelectorAll) {
-              node.querySelectorAll('a').forEach(el => {
-                if (isSplineWatermark(el)) {
-                  console.log('[🔍 Observer Removed Spline Watermark]', el);
-                  el.remove();
-                }
-              });
-            }
-          }
-        });
+  <script>
+    ;(function removeCalendlyLightBadge() {
+      // Helper: find any <a> that wraps the branding div and remove it
+      function cleanBadge() {
+        // Select all branding containers in light DOM:
+        document
+          .querySelectorAll('a[href*="calendly.com"] > div[data-id="branding"]')
+          .forEach(brandDiv => {
+            const badgeLink = brandDiv.closest('a');
+            console.log('[🧼 Removed Calendly Light-DOM Badge]', badgeLink);
+            badgeLink.remove();
+          });
       }
-    });
+    
+      // Run once on load
+      cleanBadge();
+    
+      // Run periodically in case Calendly injects it later
+      const intervalId = setInterval(cleanBadge, 500);
+    
+      // Also watch for new nodes anywhere in the page
+      const observer = new MutationObserver(cleanBadge);
+      observer.observe(document.body, { childList: true, subtree: true });
+    
+      // (Optional) stop after 30s to save resources
+      // setTimeout(() => {
+      //   clearInterval(intervalId);
+      //   observer.disconnect();
+      // }, 30000);
+    })();
+    </script>
+    
+  
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-  })();
-})();
-
-
-</script>
 </head>
 <body>
-
-  <!-- 🎯 Load Elfsight After Killers -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.2/build/spline-viewer.js"></script>
-  <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer>
+ <!-- Calendly inline widget begin -->
+<div class="calendly-inline-widget" data-url="https://calendly.com/sofiyasenthilkumar/30min" style="min-width:320px;height:700px;"></div>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<!-- Calendly inline widget end -->
 </body>
 </html>
