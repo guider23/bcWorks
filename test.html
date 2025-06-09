@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>No Watermark Zone</title>
+<script>
+  (function () {
+  const allowedDomain = 'bcworks.in.net';
+  const currentDomain = window.location.hostname;
+
+  if (!currentDomain.endsWith(allowedDomain)) {
+    console.warn('[🔒 Domain Lock] Unauthorized domain:', currentDomain);
+    return; // Abort script
+  }
+
+  // Begin watermark remover
+  (function removeCommonNinjaWatermarks() {
+    // Check if element is Common Ninja bracket widget link
+    const isCommonNinjaWatermark = (el) => {
+      return (
+        el.tagName === 'A' &&
+        /commoninja\.com/.test(el.href || '') &&
+        /free brackets/i.test(el.innerText.toLowerCase()) &&
+        el.querySelector('img')
+      );
+    };
+
+    const cleanWatermarks = () => {
+      document.querySelectorAll('a').forEach(a => {
+        if (isCommonNinjaWatermark(a)) {
+          console.log('[🧼 Removed Common Ninja Watermark]', a);
+          a.remove();
+        }
+      });
+    };
+
+    // Run on interval for delayed injections
+    setInterval(cleanWatermarks, 300);
+
+    // Watch for DOM changes using MutationObserver
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) {
+            if (isCommonNinjaWatermark(node)) {
+              console.log('[🔍 Observer Removed Common Ninja]', node);
+              node.remove();
+            }
+
+            if (node.querySelectorAll) {
+              node.querySelectorAll('a').forEach(el => {
+                if (isCommonNinjaWatermark(el)) {
+                  console.log('[🔍 Observer Removed Common Ninja]', el);
+                  el.remove();
+                }
+              });
+            }
+          }
+        });
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  })();
+})();
+
+</script>
+</head>
+<body>
+    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+    <div class="commonninja_component pid-c16a0f7f-66a3-4900-b7a4-6bf15b582205"></div>
+  <!-- 🎯 Load Elfsight After Killers -->
+  <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.2/build/spline-viewer.js"></script>
+  <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer> -->
+</body>
+</html>
