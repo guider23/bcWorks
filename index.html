@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>BC WORKS</title>
@@ -96,7 +97,35 @@
     }
   })();
 </script>
+<script>
+  (function removeSplineLogoFromShadowDOM() {
 
+  // 1) Helper: remove any <a id="logo"> inside each spline-viewer shadowRoot
+  function cleanLogo() {
+    document.querySelectorAll('spline-viewer').forEach(comp => {
+      const sr = comp.shadowRoot;
+      if (!sr) return;
+
+      const logo = sr.getElementById('logo');
+      if (logo) {
+        console.log('[🧼 Removed Spline Logo in shadow]', logo);
+        logo.remove();
+      }
+    });
+  }
+
+  // 2) Run immediately (in case it's already there)
+  cleanLogo();
+
+  // 3) Poll every 300ms to catch re-injections
+  setInterval(cleanLogo, 300);
+
+  // 4) Observe light-DOM mutations (e.g. new spline-viewers added)
+  new MutationObserver(cleanLogo)
+    .observe(document.body, { childList: true, subtree: true });
+  
+})();
+</script>
 </head>
 <body>
   <!-- Blurred overlay on top -->
