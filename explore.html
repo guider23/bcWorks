@@ -688,53 +688,10 @@
 
 
 
-<style>
-  .code-b {
-    position: relative;
-    background-color: #f5f5f5;
-    padding: 16px;
-    border-radius: 12px;
-    font-family: monospace;
-    font-size: 14px;
-    overflow-x: auto; /* Enables horizontal scroll on small screens */
-    word-break: break-word;
-    white-space: pre-wrap;
-  }
-
-  .copy-bu {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: #222;
-    color: #fff;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .copy-button:hover {
-    background: #444;
-  }
-</style>
-
-<div class="code-block">
-  <button class="copy-button" onclick="copyCode(this)">Copy</button>
-  &lt;script src="https://cdn.jsdelivr.net/gh/(PIN)/bcshield@yourdomain/bc-shield.js" defer&gt;&lt;/script&gt;
-</div>
-
-<script>
-  function copyCode(button) {
-    const codeText = button.parentElement.innerText.replace("Copy", "").trim();
-    navigator.clipboard.writeText(codeText).then(() => {
-      button.innerText = "Copied!";
-      setTimeout(() => (button.innerText = "Copy"), 2000);
-    });
-  }
-</script>
-
+  <div class="code-block">
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+&lt;script src="https://cdn.jsdelivr.net/gh/(PIN)/bcshield@yourdomain/bc-shield.js" defer&gt;&lt;/script&gt;
+                    </div>
 
 
 
