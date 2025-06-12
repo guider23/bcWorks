@@ -300,7 +300,96 @@
             <!-- Welcome Message -->
             <div id="welcome" class="welcome-message">
                 Hey there, Choose any product from left sidebar to explore
-               
+               <style>
+  #cn-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 360px;
+    max-width: 90vw;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  #cn-popup .popup-header {
+    background: #f5f5f5;
+    padding: 8px 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+  }
+
+  #cn-popup .popup-close {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    transition: 0.2s ease;
+  }
+
+  #cn-popup .popup-close:hover {
+    color: #000;
+  }
+
+  #cn-popup .commonninja_component {
+    width: 100%;
+    height: 350px;
+  }
+</style>
+
+<script>
+  if (window.innerWidth > 768) {
+    // Create the popup container
+    const popup = document.createElement('div');
+    popup.id = 'cn-popup';
+    popup.innerHTML = `
+      <div class="popup-header">
+        Widget
+        <span class="popup-close">&times;</span>
+      </div>
+      <div class="commonninja_component pid-7e089c7a-a9dd-4d80-887d-81636f92e064"></div>
+    `;
+    document.body.appendChild(popup);
+
+    // Close button logic
+    popup.querySelector('.popup-close').addEventListener('click', () => {
+      popup.remove();
+    });
+
+    // Load Common Ninja widget
+    const script = document.createElement('script');
+    script.src = "https://cdn.commoninja.com/sdk/latest/commonninja.js";
+    script.defer = true;
+    document.head.appendChild(script);
+
+    // Once loaded, remove watermark
+    script.onload = () => {
+      (function removeCommonNinjaWatermark() {
+        const interval = setInterval(() => {
+          const component = document.querySelector('.commonninja_component');
+          if (!component || !component.shadowRoot) return;
+
+          const shadow = component.shadowRoot;
+          const ribbon = shadow.querySelector('a.commonninja-ribbon-link');
+
+          if (ribbon) {
+            console.log('[✅ Removed Common Ninja Watermark]', ribbon);
+            ribbon.remove();
+            clearInterval(interval);
+          }
+        }, 500);
+        setTimeout(() => clearInterval(interval), 20000);
+      })();
+    };
+  }
+</script>
+
             </div>
 
 
