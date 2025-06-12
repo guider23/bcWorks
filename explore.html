@@ -256,121 +256,6 @@
             line-height: 1.6;
         }
     </style>
-    <style>
-  #premium-popup {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 320px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    z-index: 9999;
-    overflow: hidden;
-    font-family: 'Segoe UI', sans-serif;
-  }
-
-  #premium-popup .popup-header {
-    background: #f5f5f5;
-    color: #aaa;
-    font-weight: bold;
-    padding: 8px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-  }
-
-  #premium-popup .popup-close {
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    color: #999;
-  }
-
-  #premium-popup .popup-body {
-    padding: 20px 16px 28px;
-    text-align: center;
-    background: linear-gradient(to bottom, #fff, #f9f9f9);
-  }
-
-  #premium-popup .premium-tag {
-    background: #2d2f34;
-    color: #fff;
-    border-radius: 12px;
-    padding: 10px 0;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-
-  #premium-popup .price {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #111;
-  }
-
-  #premium-popup .subtext {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  #premium-popup .period {
-    color: #cc0000;
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
-
-  #premium-popup .buy-btn {
-    background: #111;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 15px;
-    text-decoration: none;
-    display: inline-block;
-    transition: 0.2s;
-  }
-
-  #premium-popup .buy-btn:hover {
-    background: #333;
-  }
-</style>
-
-<script>
-  if (window.innerWidth > 768) {
-    const popup = document.createElement('div');
-    popup.id = 'premium-popup';
-    popup.innerHTML = `
-      <div class="popup-header">
-        Widget
-        <span class="popup-close">&times;</span>
-      </div>
-      <div class="popup-body">
-        <div class="premium-tag">Premium</div>
-        <div class="price">Rs.99<span style="font-size:16px">/month</span></div>
-        <div class="period">Period</div>
-        <a href="https://guider23.gumroad.com/l/premium" target="_blank" class="buy-btn">Get it now!</a>
-      </div>
-    `;
-    document.body.appendChild(popup);
-
-    // Close on X
-    popup.querySelector('.popup-close').addEventListener('click', () => popup.remove());
-
-    // Close when clicking outside
-    setTimeout(() => {
-      document.addEventListener('click', function outsideClick(e) {
-        if (!popup.contains(e.target)) {
-          popup.remove();
-          document.removeEventListener('click', outsideClick);
-        }
-      });
-    }, 100);
-  }
-</script>
 
 </head>
 <body class="bg-gray-900 text-white flex flex-col md:flex-row h-screen">
@@ -1016,6 +901,123 @@
 <script>
   if (window.innerWidth < 768) {
     document.getElementById('pc-notify').style.display = 'block';
+  }
+</script>
+
+
+        <style>
+  #premium-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 9999;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  #premium-popup .popup-header {
+    background: #f5f5f5;
+    color: #aaa;
+    font-weight: bold;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  #premium-popup .popup-close {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #999;
+  }
+
+  #premium-popup .popup-body {
+    padding: 20px 16px 28px;
+    text-align: center;
+    background: linear-gradient(to bottom, #fff, #f9f9f9);
+  }
+
+  #premium-popup .premium-tag {
+    background: #2d2f34;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  #premium-popup .price {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #111;
+  }
+
+  #premium-popup .subtext {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #premium-popup .period {
+    color: #cc0000;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  #premium-popup .buy-btn {
+    background: #111;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s;
+  }
+
+  #premium-popup .buy-btn:hover {
+    background: #333;
+  }
+</style>
+
+<script>
+  if (window.innerWidth > 768) {
+    const popup = document.createElement('div');
+    popup.id = 'premium-popup';
+    popup.innerHTML = `
+      <div class="popup-header">
+        Ads
+        <span class="popup-close">&times;</span>
+      </div>
+      <div class="popup-body">
+        <div class="premium-tag">Premium</div>
+        <div class="price">Rs.99<span style="font-size:16px">/month</span></div>
+        <div class="period">Period</div>
+        <a href="https://guider23.gumroad.com/l/premium" target="_blank" class="buy-btn">Get it now!</a>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    // Close on X
+    popup.querySelector('.popup-close').addEventListener('click', () => popup.remove());
+
+    // Close when clicking outside
+    setTimeout(() => {
+      document.addEventListener('click', function outsideClick(e) {
+        if (!popup.contains(e.target)) {
+          popup.remove();
+          document.removeEventListener('click', outsideClick);
+        }
+      });
+    }, 100);
   }
 </script>
 
