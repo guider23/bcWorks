@@ -345,7 +345,6 @@
 
 <script>
   if (window.innerWidth > 768) {
-    // Create the popup container
     const popup = document.createElement('div');
     popup.id = 'cn-popup';
     popup.innerHTML = `
@@ -357,10 +356,18 @@
     `;
     document.body.appendChild(popup);
 
-    // Close button logic
-    popup.querySelector('.popup-close').addEventListener('click', () => {
-      popup.remove();
-    });
+    // Close on X button
+    popup.querySelector('.popup-close').addEventListener('click', () => popup.remove());
+
+    // Close if clicked outside
+    setTimeout(() => {
+      document.addEventListener('click', function outsideClick(e) {
+        if (!popup.contains(e.target)) {
+          popup.remove();
+          document.removeEventListener('click', outsideClick);
+        }
+      });
+    }, 100); // small delay so it doesn't catch its own opening click
 
     // Load Common Ninja widget
     const script = document.createElement('script');
@@ -368,7 +375,7 @@
     script.defer = true;
     document.head.appendChild(script);
 
-    // Once loaded, remove watermark
+    // Remove watermark
     script.onload = () => {
       (function removeCommonNinjaWatermark() {
         const interval = setInterval(() => {
