@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuke.js</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #121212, #1e1e1e);
+      color: white;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      background: linear-gradient(to right, #66ffcc, #3399ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 40px;
+    }
+
+    .slider-container {
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      animation: fade 0.5s ease;
+    }
+
+    .slide.active {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      width: 450px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    iframe {
+      width: 100%;
+      height: 360px;
+      border-radius: 12px;
+      border: none;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .btns {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .btns button {
+      background: #222;
+      color: white;
+      padding: 10px 24px;
+      margin: 0 10px;
+      border-radius: 30px;
+      font-size: 1em;
+      border: 1px solid #444;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btns button:hover {
+      background: #333;
+    }
+
+    @media(max-width: 960px) {
+      .card { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Nuke.js - The first script that goes crazy behind shadow roots</h1>
+
+<div class="slider-container">
+
+  <!-- Slide 1: Elfsight -->
+  <div class="slide active">
+    <div class="card">
+      <div class="title">Elfsight – Before</div>
+      <iframe srcdoc='
+        <script src="https://static.elfsight.com/platform/platform.js" async></script>
+        <div class="elfsight-app-406d60cd-9ae2-4265-b3eb-276b1477cf83" data-elfsight-app-lazy></div>
+      '></iframe>
+    </div>
+    <div class="card">
+      <div class="title">Elfsight – After</div>
+      <iframe id="elfAfter" srcdoc='
+        <script src="https://static.elfsight.com/platform/platform.js" async></script>
+        <div class="elfsight-app-406d60cd-9ae2-4265-b3eb-276b1477cf83" data-elfsight-app-lazy></div>
+      '></iframe>
+    </div>
+  </div>
+
+  <!-- Slide 2: Common Ninja -->
+  <div class="slide">
+    <div class="card">
+      <div class="title">Common Ninja – Before</div>
+      <iframe srcdoc='
+        <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+        <div class="commonninja_component pid-e8651809-e687-4ebf-ba1a-d28486493c9f"></div>
+      '></iframe>
+    </div>
+    <div class="card">
+      <div class="title">Common Ninja – After</div>
+      <iframe id="ninjaAfter" srcdoc='
+        <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+        <div class="commonninja_component pid-e8651809-e687-4ebf-ba1a-d28486493c9f"></div>
+      '></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: POWr Countdown Timer -->
+<div class="slide">
+  <div class="card">
+    <div class="title">POWr – Before</div>
+    <iframe srcdoc='
+      <div id="4M73j4" app_slug="countdown-timer" class="powrssr"></div>
+      <script src="https://app.powr.io/assets/webcomponent.js"></script>
+    '></iframe>
+  </div>
+  <div class="card">
+    <div class="title">POWr – After</div>
+    <iframe id="powrAfter" srcdoc='
+      <div id="4M73j4" app_slug="countdown-timer" class="powrssr"></div>
+      <script src="https://app.powr.io/assets/webcomponent.js"></script>
+    '></iframe>
+  </div>
+</div>
+<!-- Slide 4: Spline Viewer -->
+<div class="slide">
+  <div class="card">
+    <div class="title">Spline – Before</div>
+    <iframe srcdoc='
+      <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.5/build/spline-viewer.js"></script>
+      <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer>
+    '></iframe>
+  </div>
+  <div class="card">
+    <div class="title">Spline – After</div>
+    <iframe id="splineAfter" srcdoc='
+      <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.5/build/spline-viewer.js"></script>
+      <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer>
+    '></iframe>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="btns">
+  <button onclick="prevSlide()">← Back</button>
+  <button onclick="nextSlide()">Next →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let currentSlide = 0;
+
+  function showSlide(i) {
+    slides.forEach((slide, index) => {
+      slide.classList.toggle('active', index === i);
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  // Inject Elfsight cleaner
+  document.getElementById('elfAfter').onload = () => {
+    const doc = document.getElementById('elfAfter').contentDocument;
+    const script = doc.createElement('script');
+    script.textContent = `
+      const isElfsightWatermark = el =>
+        el.tagName === 'A' && /elfsight\\.com/.test(el.href || '') && /free/i.test(el.innerText || '') && el.querySelector('svg');
+
+      const clean = () => document.querySelectorAll('a').forEach(a => isElfsightWatermark(a) && a.remove());
+
+      setInterval(clean, 300);
+
+      new MutationObserver(muts => {
+        muts.forEach(m => m.addedNodes.forEach(n => {
+          if (n.nodeType === 1 && isElfsightWatermark(n)) n.remove();
+          n.querySelectorAll?.('a').forEach(el => isElfsightWatermark(el) && el.remove());
+        }));
+      }).observe(document.body, {childList: true, subtree: true});
+    `;
+    doc.body.appendChild(script);
+  };
+
+  // Inject Common Ninja cleaner
+  document.getElementById('ninjaAfter').onload = () => {
+    const doc = document.getElementById('ninjaAfter').contentDocument;
+    const script = doc.createElement('script');
+    script.textContent = `
+      const isRibbon = el =>
+        el.tagName === 'A' && el.classList.contains('commonninja-ribbon-link') && /commoninja/i.test(el.href);
+
+      const removeRibbons = (root = document) =>
+        root.querySelectorAll('a.commonninja-ribbon-link').forEach(r => r.remove());
+
+      const checkShadows = () =>
+        document.querySelectorAll('*').forEach(el => el.shadowRoot && removeRibbons(el.shadowRoot));
+
+      const interval = setInterval(() => {
+        removeRibbons();
+        checkShadows();
+      }, 500);
+
+      setTimeout(() => clearInterval(interval), 20000);
+    `;
+    doc.body.appendChild(script);
+  };
+// POWR Watermark Removal for "After" iframe
+document.getElementById('powrAfter').onload = () => {
+  const doc = document.getElementById('powrAfter').contentDocument;
+  const script = doc.createElement('script');
+  script.textContent = `
+    (() => {
+      const original = Element.prototype.attachShadow;
+      Element.prototype.attachShadow = function (init) {
+        const shadow = original.call(this, init);
+        this._shadowRoot = shadow;
+        setTimeout(() => {
+          tryRemoveWatermark(shadow);
+          observe(shadow);
+        }, 100);
+        return shadow;
+      };
+    })();
+
+    const tryRemoveWatermark = (root) => {
+      try {
+        root.querySelectorAll('a[href*="utm_src=watermark"]').forEach(el => {
+          el.remove();
+        });
+      } catch (e) {}
+
+      document.querySelectorAll('iframe').forEach(iframe => {
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.querySelectorAll('a[href*="utm_src=watermark"]').forEach(el => el.remove());
+        } catch (e) {}
+      });
+    };
+
+    const observe = (root) => {
+      if (!root) return;
+      const obs = new MutationObserver(() => tryRemoveWatermark(root));
+      obs.observe(root, { childList: true, subtree: true });
+    };
+
+    const scanAndRemoveForever = () => {
+      tryRemoveWatermark(document);
+      document.querySelectorAll('*').forEach(el => {
+        if (el.shadowRoot) {
+          tryRemoveWatermark(el.shadowRoot);
+          observe(el.shadowRoot);
+        }
+      });
+    };
+
+    setInterval(scanAndRemoveForever, 1000);
+  `;
+  doc.body.appendChild(script);
+};
+// Spline watermark cleaner for iframe
+document.getElementById('splineAfter').onload = () => {
+  const doc = document.getElementById('splineAfter').contentDocument;
+  const script = doc.createElement('script');
+  script.textContent = `
+    (function removeSplineLogoFromShadowDOM() {
+      function cleanLogo() {
+        document.querySelectorAll('spline-viewer').forEach(comp => {
+          const sr = comp.shadowRoot;
+          if (!sr) return;
+          const logo = sr.getElementById('logo');
+          if (logo) logo.remove();
+        });
+      }
+
+      cleanLogo(); // First run
+      setInterval(cleanLogo, 300); // Repeated check
+      new MutationObserver(cleanLogo).observe(document.body, {
+        childList: true, subtree: true
+      });
+    })();
+  `;
+  doc.body.appendChild(script);
+};
+
+
+</script>
+
+
+</body>
+</html>
