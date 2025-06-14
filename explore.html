@@ -843,100 +843,100 @@ Buy to activate                    </div>
         <script>
             let badges = []; // Store badge elements to manage their lifecycle
         
-            function showContent(topicId) {
-                // Hide all content, including welcome message
-                document.querySelectorAll('.topic-content, .welcome-message').forEach(content => {
-                    content.classList.add('hidden');
-                });
-        
-                // Show selected topic content
-                document.getElementById(topicId).classList.remove('hidden');
-        
-                // Remove all existing badges
-                badges.forEach(badge => badge.remove());
-                badges = [];
-        
-                // Add badges based on topicId
-                let topOffset = 12; // Starting position for badges
-                if (topicId === 'topic1') {
-                    // Deprecated badge for Topic 1
-                    const deprecatedBadge = document.createElement('div');
-                    deprecatedBadge.textContent = 'Deprecated';
-                    Object.assign(deprecatedBadge.style, {
-                        position: 'fixed',
-                        top: `${topOffset}px`,
-                        right: '12px',
-                        background: 'linear-gradient(to bottom, #555, #222)',
-                        color: '#fff',
-                        padding: '3px 10px',
-                        fontSize: '12px',
-                        fontFamily: 'Segoe UI, sans-serif',
-                        borderRadius: '999px',
-                        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.3)',
-                        zIndex: '9999',
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        fontWeight: 'bold',
-                        transform: 'scale(0.95)',
-                        letterSpacing: '0.5px',
-                    });
-                    document.body.appendChild(deprecatedBadge);
-                    badges.push(deprecatedBadge);
-                } else if (['topic2', 'topic3', 'topic4'].includes(topicId)) {
-                    // Open Source badge for Topics 2, 3, and 4
-                    const openSourceBadge = document.createElement('div');
-                    openSourceBadge.textContent = 'Open Source';
-                    Object.assign(openSourceBadge.style, {
-                        position: 'fixed',
-                        top: `${topOffset}px`,
-                        right: '12px',
-                        background: 'linear-gradient(to bottom, #4CAF50, #2E7D32)',
-                        color: '#fff',
-                        padding: '3px 10px',
-                        fontSize: '12px',
-                        fontFamily: 'Segoe UI, sans-serif',
-                        borderRadius: '999px',
-                        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3), 0 2px 5px rgba(0,0,0,0.2)',
-                        zIndex: '9999',
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        fontWeight: 'bold',
-                        transform: 'scale(0.95)',
-                        letterSpacing: '0.5px',
-                    });
-                    document.body.appendChild(openSourceBadge);
-                    badges.push(openSourceBadge);
-                } else if (topicId === 'topic5') {
-                    // Paid badge for Topic 5
-                    const paidBadge = document.createElement('div');
-                    paidBadge.textContent = 'Paid';
-                    Object.assign(paidBadge.style, {
-                        position: 'fixed',
-                        top: `${topOffset}px`,
-                        right: '12px',
-                        background: 'linear-gradient(to bottom, #ff4d4d, #cc0000)',
-                        color: '#fff',
-                        padding: '3px 8px',
-                        fontSize: '12px',
-                        fontFamily: 'Segoe UI, sans-serif',
-                        borderRadius: '999px',
-                        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3), 0 2px 5px rgba(0,0,0,0.2)',
-                        zIndex: '9999',
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        fontWeight: 'bold',
-                        transform: 'scale(0.95)',
-                        letterSpacing: '0.5px',
-                    });
-                    document.body.appendChild(paidBadge);
-                    badges.push(paidBadge);
-                }
-        
-                // Close sidebar on mobile after selection
-                if (window.innerWidth <= 768) {
-                    document.querySelector('.sidebar').classList.remove('open');
-                }
-            }
+    function showContent(topicId) {
+    // Hide all content, including welcome message
+    document.querySelectorAll('.topic-content, .welcome-message').forEach(content => {
+        content.classList.add('hidden');
+    });
+
+    // Show selected topic content
+    document.getElementById(topicId).classList.remove('hidden');
+
+    // Remove all existing badges
+    badges.forEach(badge => badge.remove());
+    badges = [];
+
+    // Add badges based on topicId
+    let topOffset = 12; // Starting position for badges
+    if (topicId === 'topic1') {
+        // Deprecated badge for Topic 1
+        const deprecatedBadge = document.createElement('div');
+        deprecatedBadge.textContent = 'Deprecated';
+        Object.assign(deprecatedBadge.style, {
+            position: 'fixed',
+            top: `${topOffset}px`,
+            right: '12px',
+            background: 'linear-gradient(to bottom, #555, #222)',
+            color: '#fff',
+            padding: '3px 10px',
+            fontSize: '12px',
+            fontFamily: 'Segoe UI, sans-serif',
+            borderRadius: '999px',
+            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.3)',
+            zIndex: '9999',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            fontWeight: 'bold',
+            transform: 'scale(0.95)',
+            letterSpacing: '0.5px',
+        });
+        document.body.appendChild(deprecatedBadge);
+        badges.push(deprecatedBadge);
+    } else if (['topic2', 'topic3', 'topic4'].includes(topicId)) {
+        // Open Source badge for Topics 2, 3, and 4
+        const openSourceBadge = document.createElement('div');
+        openSourceBadge.textContent = 'Open Source';
+        Object.assign(openSourceBadge.style, {
+            position: 'fixed',
+            top: `${topOffset}px`,
+            right: '12px',
+            background: 'linear-gradient(to bottom, #4CAF50, #2E7D32)',
+            color: '#fff',
+            padding: '3px 10px',
+            fontSize: '12px',
+            fontFamily: 'Segoe UI, sans-serif',
+            borderRadius: '999px',
+            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3), 0 2px 5px rgba(0,0,0,0.2)',
+            zIndex: '9999',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            fontWeight: 'bold',
+            transform: 'scale(0.95)',
+            letterSpacing: '0.5px',
+        });
+        document.body.appendChild(openSourceBadge);
+        badges.push(openSourceBadge);
+    } else if (['topic5', 'topic6'].includes(topicId)) {
+        // Paid badge for Topics 5 and 6
+        const paidBadge = document.createElement('div');
+        paidBadge.textContent = 'Paid';
+        Object.assign(paidBadge.style, {
+            position: 'fixed',
+            top: `${topOffset}px`,
+            right: '12px',
+            background: 'linear-gradient(to bottom, #ff4d4d, #cc0000)',
+            color: '#fff',
+            padding: '3px 8px',
+            fontSize: '12px',
+            fontFamily: 'Segoe UI, sans-serif',
+            borderRadius: '999px',
+            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3), 0 2px 5px rgba(0,0,0,0.2)',
+            zIndex: '9999',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            fontWeight: 'bold',
+            transform: 'scale(0.95)',
+            letterSpacing: '0.5px',
+        });
+        document.body.appendChild(paidBadge);
+        badges.push(paidBadge);
+    }
+
+    // Close sidebar on mobile after selection
+    if (window.innerWidth <= 768) {
+        document.querySelector('.sidebar').classList.remove('open');
+    }
+}
         
             function toggleSidebar() {
                 document.querySelector('.sidebar').classList.toggle('open');
