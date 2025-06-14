@@ -1051,7 +1051,52 @@ Better readability in bigger screen<button onclick="document.getElementById('pc-
     }, 100);
   }
 </script>
+<script>
+    (function forceLinksToOpenInNewTab() {
+  const applyToLinks = (root = document) => {
+    const links = root.querySelectorAll('a[href]');
+    links.forEach(link => {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer'); // for safety
+    });
+  };
 
+  // Apply to main document
+  applyToLinks();
+
+  // Apply to all same-origin iframes
+  const applyToIframes = () => {
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(iframe => {
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (doc) {
+          applyToLinks(doc);
+
+          // Observe for dynamically added links in iframe
+          new MutationObserver(() => applyToLinks(doc)).observe(doc.body, {
+            childList: true,
+            subtree: true
+          });
+        }
+      } catch (e) {
+        // Cross-origin iframe – skip it
+      }
+    });
+  };
+  applyToIframes();
+
+  // Watch for new links in main document
+  new MutationObserver(() => {
+    applyToLinks();
+    applyToIframes();
+  }).observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+})();
+
+</script>
 
 </body>
 </html>
