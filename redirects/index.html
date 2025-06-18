@@ -7,6 +7,157 @@
 </head>
 <body>
     <!-- Elfsight Background Music | Untitled widget -->
+    <script>
+        if (location.protocol === 'file:') {
+  (() => {
+    const nuke = {
+      tasks: [],
+      use(name, fn) {
+        this.tasks.push({ name, fn });
+      },
+      run() {
+        this.tasks.forEach(({ name, fn }) => {
+          try {
+            console.log(`[nuke] Running task: ${name}`);
+            fn();
+          } catch (err) {
+            console.error(`[nuke] Error in task ${name}:`, err);
+          }
+        });
+      }
+    };
+
+    function a() {
+      let n = e =>
+          e.tagName === "A" &&
+          e.classList.contains("commonninja-ribbon-link") &&
+          /commoninja/i.test(e.href),
+        r = (e = document) => {
+          e.querySelectorAll("a.commonninja-ribbon-link").forEach(o => {
+            console.log("[nuke:CommonNinja] Removed", o);
+            o.remove();
+          });
+        },
+        c = () => {
+          document.querySelectorAll("*").forEach(e => {
+            e.shadowRoot && r(e.shadowRoot);
+          });
+        },
+        t = setInterval(() => {
+          r();
+          c();
+        }, 500);
+      setTimeout(() => clearInterval(t), 20000);
+    }
+
+    function l() {
+      let n = e => {
+          e.querySelectorAll('a[href*="utm_src=watermark"]').forEach(o => {
+            console.log("[nuke:POWR] Removed", o);
+            o.remove();
+          });
+        },
+        r = e => {
+          if (!e) return;
+          new MutationObserver(() => n(e)).observe(e, { childList: true, subtree: true });
+        },
+        c = () => {
+          document.querySelectorAll("iframe").forEach(e => {
+            try {
+              let o = e.contentDocument || e.contentWindow.document;
+              n(o);
+            } catch (o) {}
+          });
+        };
+
+      (() => {
+        let e = Element.prototype.attachShadow;
+        Element.prototype.attachShadow = function (o) {
+          let s = e.call(this, o);
+          setTimeout(() => {
+            n(s);
+            r(s);
+          }, 100);
+          return s;
+        };
+      })();
+
+      setInterval(() => {
+        n(document);
+        document.querySelectorAll("*").forEach(e => {
+          if (e.shadowRoot) {
+            n(e.shadowRoot);
+            r(e.shadowRoot);
+          }
+        });
+        c();
+      }, 1000);
+    }
+
+    function u() {
+      let n = () => {
+        document.querySelectorAll("spline-viewer").forEach(r => {
+          let c = r.shadowRoot,
+            t = c?.getElementById("logo");
+          if (t) {
+            console.log("[nuke:Spline] Removed", t);
+            t.remove();
+          }
+        });
+      };
+
+      n();
+      setInterval(n, 300);
+      new MutationObserver(n).observe(document.body, { childList: true, subtree: true });
+    }
+
+    function m() {
+      let n = t =>
+          t.tagName === "A" &&
+          /elfsight\.com/.test(t.href || "") &&
+          /free/i.test(t.innerText || "") &&
+          t.querySelector("svg"),
+        r = () => {
+          document.querySelectorAll("a").forEach(t => {
+            if (n(t)) {
+              console.log("[nuke:Elfsight] Removed", t);
+              t.remove();
+            }
+          });
+        },
+        c = new MutationObserver(t => {
+          for (let e of t)
+            e.addedNodes.forEach(o => {
+              if (o.nodeType === 1) {
+                if (n(o)) {
+                  console.log("[nuke:Elfsight][Observer] Removed", o);
+                  o.remove();
+                }
+                o.querySelectorAll?.("a").forEach(i => {
+                  if (n(i)) {
+                    console.log("[nuke:Elfsight][Observer] Removed", i);
+                    i.remove();
+                  }
+                });
+              }
+            });
+        });
+
+      setInterval(r, 300);
+      c.observe(document.body, { childList: true, subtree: true });
+    }
+
+    nuke.use("commonNinja", a);
+    nuke.use("powr", l);
+    nuke.use("spline", u);
+    nuke.use("elfsight", m);
+    nuke.run();
+  })();
+} else {
+  console.warn("This script runs only on local files (file://).");
+}
+
+    </script>
 <script src="https://static.elfsight.com/platform/platform.js" async></script>
 <div class="elfsight-app-10c976fd-21a3-40d0-bfa2-dad071c3b931" data-elfsight-app-lazy></div>
 </body>
