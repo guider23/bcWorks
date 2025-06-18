@@ -1,0 +1,245 @@
+.refer-section {
+    margin-top: 0px;
+    margin-bottom: 48px;
+}
+
+.refer-container {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.refer-title {
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 104%;
+    text-align: center;
+    color: #000000;
+    margin-bottom: 16px;
+}
+
+.refer-description p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 162%;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.refer-description p:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.refer-description strong {
+    font-weight: 700;
+
+}
+
+.refer-shortcode_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    background: #FFFFFF;
+    box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
+
+    margin-top: 70px;
+}
+
+.form-inpute {
+    margin-bottom: 12px;
+    /* text-body */
+
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 162%;
+    letter-spacing: 0.01em;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+/* <text field> */
+.form-inpute input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 24px;
+    width: 287px;
+    height: 48px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 96px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 162%;
+    letter-spacing: 0.01em;
+    color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+}
+
+.form-inpute input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.form-submit {
+    margin-top: 32px;
+}
+
+.form-submit input {
+    display: flex;
+    width: 100%;
+    height: 3.75rem;
+
+    justify-content: center;
+    align-items: center;
+    border-radius: 6.25rem;
+    background: #6b8dff;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    color: #fff;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    transition: 0.3s ease-in-out;
+    text-align: center;
+    border: none;
+}
+
+.form-submit input:hover {
+    background: #000;
+}
+
+.title-refer-shortcode_form {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 111%;
+    text-align: center;
+    letter-spacing: 0.01em;
+
+    color: #000000;
+    margin-bottom: 32px;
+}
+
+.refer-shortcode_form .wpcf7 {
+    width: 100%;
+}
+
+.refer-container-successfully {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.refer-container-successfully .refer-title {
+    margin-top: 16px;
+}
+
+.btn-outline-main-color {
+    border-color: rgb(106, 141, 255);
+    color: rgb(106, 141, 255);
+    background: transparent;
+}
+
+.btn-outline-main-color:hover {
+    background: rgb(0, 0, 0);
+    border-color: rgb(0, 0, 0);
+    color: #fff;
+}
+
+.button_with_link_group {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.button_with_link_group a {
+    min-width: 260px;
+    justify-content: center;
+}
+
+.screen-reader-response a,
+.wpcf7-list-item-label a {
+    color: #7350ff;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 110%;
+    letter-spacing: 0.01rem;
+    position: relative;
+    display: inline-block;
+    -webkit-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+
+.screen-reader-response a:before,
+.wpcf7-list-item-label a:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 1px;
+    background: #7350ff;
+    -webkit-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+
+.screen-reader-response a:hover:before,
+.wpcf7-list-item-label a:hover:before {
+    width: 0;
+    left: 0;
+}
+
+.refer-container-successfully {
+    display: none;
+}
+
+@media only screen and (min-width: 1000px) {
+    .refer-section {
+        margin-top: 10px;
+        margin-bottom: 90px;
+    }
+
+    .refer-title {
+        font-size: 56px;
+    }
+
+    .refer-description p {
+        font-size: 16px;
+        padding-left: 26px;
+        padding-right: 26px;
+    }
+
+    .refer-description p:not(:last-child) {
+        margin-bottom: 12px;
+    }
+
+    .refer-shortcode_form {
+        padding: 48px;
+        margin-top: 70px;
+    }
+
+    .form-submit {
+        margin-top: 48px;
+    }
+
+    .title-refer-shortcode_form {
+        margin-bottom: 48px;
+        font-size: 24px;
+    }
+
+    .refer-container-successfully .refer-title {
+        margin-top: 24px;
+    }
+
+    .button_with_link_group {
+        margin-top: 48px;
+        flex-direction: row;
+    }
+}
