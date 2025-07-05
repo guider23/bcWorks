@@ -1,167 +1,265 @@
-<!-- Don't use files without permissions -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7232426578975766"
-     crossorigin="anonymous"></script>
-
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>BC WORKS</title>
+  <title>Tournament</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100vw;
+      min-height: 100vh;
       overflow: hidden;
       background: #000;
+      box-sizing: border-box;
     }
-
-    /* Full blur overlay on top */
-    #blur-overlay {
-      position: fixed;
-      inset: 0;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 9999;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-    }
-
-    #blur-overlay.fade-out {
-      opacity: 0;
-    }
-
-    spline-viewer {
-      width: 100vw;
-      height: 120dvh;
-      display: block;
-    }
-
-    .button-container {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+    body {
       display: flex;
-      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-width: 100vw;
     }
-
-    .custom-button {
-      padding: 10px 20px;
-      font-size: 16px;
-      font-family: Arial, sans-serif;
+    .commonninja_component {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      box-sizing: border-box;
+      background: rgba(0,0,0,0.95);
+      border-radius: 0;
+      overflow: hidden;
+    }
+    @media (max-width: 600px) {
+      html, body, .commonninja_component {
+        width: 100vw;
+        height: 100vh;
+        min-width: 100vw;
+        min-height: 100vh;
+        border-radius: 0;
+      }
+    }
+    .preview-fallback {
+      display: none;
+    }
+    #landscape-warning {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #000c;
+      color: #fff;
+      font-size: 2em;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2em;
+    }
+    @media screen and (orientation: portrait) {
+      #landscape-warning {
+        display: flex;
+      }
+      .commonninja_component {
+        display: none !important;
+      }
+    }
+    #jimjam-loading-overlay {
+      position: fixed;
+      z-index: 10000;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #000d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.5s;
+    }
+    #jimjam-loading-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #jimjam-loading-content {
+      text-align: center;
+    }
+    #bc-anchor-ad {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9998;
+      background: #181818ee;
+      color: #fff;
+      font-size: 1.1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7em 1.2em;
+      box-shadow: 0 -2px 12px #0008;
+      border-top: 2px solid #333;
+      gap: 1em;
+      min-height: 56px;
+      transition: transform 0.3s;
+    }
+    #bc-anchor-ad a {
+      color: #ffd700;
+      text-decoration: underline;
       font-weight: bold;
-      color: #FF69B4;
-      background: transparent;
-      border: 1px solid #FF69B4;
-      border-radius: 5px;
+      margin-left: 0.5em;
+    }
+    #bc-anchor-ad .bc-ad-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5em;
       cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      padding: 0 0.5em;
+      line-height: 1;
+      opacity: 0.7;
+      transition: opacity 0.2s;
     }
-
-    .custom-button:hover {
-      background-color: #FF69B4;
-      color: #1E2A44;
+    #bc-anchor-ad .bc-ad-close:hover {
+      opacity: 1;
     }
-
-    @media (max-width: 768px) {
-      spline-viewer {
-        height: 100dvh;
-      }
-
-      .button-container {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-      }
-
-      .custom-button {
-        padding: 8px 16px;
-        font-size: 14px;
+    @media (max-width: 600px) {
+      #bc-anchor-ad {
+        font-size: 1em;
+        min-height: 48px;
+        padding: 0.5em 0.5em;
       }
     }
   </style>
-  <script>
-  (function() {
-    // define your breakpoints (in pixels)
-    const MOBILE_MAX = 768;
-    const TABLET_MAX = 1024;
-
-    // get current viewport width
-    const w = window.innerWidth || document.documentElement.clientWidth;
-
-    // if it’s mobile or tablet, redirect
-    if (w <= TABLET_MAX) {
-      // use location.replace so it doesn’t clutter the back-button history
-      location.replace('https://bcworks.in.net/explore.html');
-    }
-  })();
-</script>
-<script>
-  (function removeSplineLogoFromShadowDOM() {
-
-  // 1) Helper: remove any <a id="logo"> inside each spline-viewer shadowRoot
-  function cleanLogo() {
-    document.querySelectorAll('spline-viewer').forEach(comp => {
-      const sr = comp.shadowRoot;
-      if (!sr) return;
-
-      const logo = sr.getElementById('logo');
-      if (logo) {
-        console.log('[🧼 Removed Spline Logo in shadow]', logo);
-        logo.remove();
-      }
-    });
-  }
-
-  // 2) Run immediately (in case it's already there)
-  cleanLogo();
-
-  // 3) Poll every 300ms to catch re-injections
-  setInterval(cleanLogo, 300);
-
-  // 4) Observe light-DOM mutations (e.g. new spline-viewers added)
-  new MutationObserver(cleanLogo)
-    .observe(document.body, { childList: true, subtree: true });
-  
-})();
-</script>
 </head>
 <body>
-  <!-- Blurred overlay on top -->
-  <div id="blur-overlay"></div>
 
-  <!-- Main content -->
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.2/build/spline-viewer.js"></script>
-  <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer>
+<script>
+(function () {
+  const allowedDomain = 'bcworks.in.net';
+  const currentDomain = window.location.hostname;
 
-  <div class="button-container">
-    <a href="explore.html"><button class="custom-button">Explore</button></a>
-  </div>
+  if (!currentDomain.endsWith(allowedDomain)) {
+    console.warn('[🔒 Domain Lock] Unauthorized domain:', currentDomain);
+    return; // Abort script
+  }
 
-  <script>
-    // Blur overlay removal
-    window.addEventListener('load', () => {
-      const blur = document.getElementById('blur-overlay');
-      setTimeout(() => {
-        blur.classList.add('fade-out');
-        setTimeout(() => blur.remove(), 500); // remove after fade
-      }, 1000);
-    });
-
-    // Spline logo killer
-    const removeLogo = () => {
-      const el = document.querySelector('a#logo');
-      if (el) el.remove();
+  // Begin watermark remover
+  (function removeCommonNinjaWatermarks() {
+    // Check if element is Common Ninja bracket widget link
+    const isCommonNinjaWatermark = (el) => {
+      return (
+        el.tagName === 'A' &&
+        /commoninja\.com/.test(el.href || '') &&
+        /free brackets/i.test(el.innerText.toLowerCase()) &&
+        el.querySelector('img')
+      );
     };
 
-    window.addEventListener('DOMContentLoaded', () => {
-      removeLogo();
-      setInterval(removeLogo, 1000);
+    const cleanWatermarks = () => {
+      document.querySelectorAll('a').forEach(a => {
+        if (isCommonNinjaWatermark(a)) {
+          console.log('[🧼 Removed Common Ninja Watermark]', a);
+          a.remove();
+        }
+      });
+    };
+
+    // Run on interval for delayed injections
+    setInterval(cleanWatermarks, 300);
+
+    // Watch for DOM changes using MutationObserver
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) {
+            if (isCommonNinjaWatermark(node)) {
+              console.log('[🔍 Observer Removed Common Ninja]', node);
+              node.remove();
+            }
+
+            if (node.querySelectorAll) {
+              node.querySelectorAll('a').forEach(el => {
+                if (isCommonNinjaWatermark(el)) {
+                  console.log('[🔍 Observer Removed Common Ninja]', el);
+                  el.remove();
+                }
+              });
+            }
+          }
+        });
+      }
     });
-  </script>
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  })();
+})();
+
+window.addEventListener('load', function() {
+  var overlay = document.getElementById('jimjam-loading-overlay');
+  if (overlay) {
+    setTimeout(function() {
+      overlay.classList.add('hide');
+      setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 600);
+    }, 500); // Show for 0.5 seconds
+  }
+});
+
+(function() {
+  var ads = [
+    {
+      text: 'Showcasing - Nuke.js - 199rs',
+      url: 'https://guider23.gumroad.com/l/nuke'
+    },
+    {
+      text: 'BC Works Premium - 99rs',
+      url: 'https://guider23.gumroad.com/l/premium'
+    },
+    {
+      text: 'BC Shield - 80rs',
+      url: 'https://guider23.gumroad.com/l/bcshield'
+    }
+  ];
+  var ad = ads[Math.floor(Math.random() * ads.length)];
+  var adBar = document.getElementById('bc-anchor-ad');
+  if (adBar) {
+    adBar.innerHTML =
+      '<span>' + ad.text + '</span>' +
+      '<a href="' + ad.url + '" target="_blank" rel="noopener">Buy Now</a>' +
+      '<button class="bc-ad-close" title="Close">&times;</button>';
+    adBar.style.display = 'flex';
+    adBar.querySelector('.bc-ad-close').onclick = function() {
+      adBar.style.transform = 'translateY(100%)';
+      setTimeout(function() { adBar.style.display = 'none'; }, 350);
+    };
+  }
+})();
+
+</script>
+<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+<div id="landscape-warning">
+  Please rotate your device to landscape mode for the best experience.
+</div>
+<div id="jimjam-loading-overlay">
+  <div id="jimjam-loading-content">
+    <img src="https://media.britannia.co.in/Jim_Jam_Pack_aa2e0478ea.png" alt="Jim Jam" style="max-width: 200px; display: block; margin: 0 auto 1em auto;" />
+    <div style="font-size: 2em; font-weight: bold; color: #fff; text-align: center;">Win a JIM JAM Now !!</div>
+  </div>
+</div>
+<div id="bc-anchor-ad" style="display:none;"></div>
+<div class="commonninja_component pid-bd6bf5ea-bb61-4705-ae70-f6bf0221d264"></div>
 </body>
 </html>
