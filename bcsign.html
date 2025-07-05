@@ -2,36 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BC SIGN/title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
-  <!-- Style -->
+  <title>BC SIGN</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100%;
       overflow: hidden;
       background: #000;
     }
     iframe {
       border: none;
-      width: 100%;
       height: 100%;
-    }
-    .preview-fallback {
-      display: none;
+      width: 100%;
     }
   </style>
-
 </head>
 <body>
- 
-  <!-- Main app iframe -->
-  <iframe 
-    src="https://bcsign.netlify.app/" 
-    allowfullscreen
-  ></iframe>
+  <!-- Use the main Netlify site URL -->
+<iframe 
+  src="bcsign.netlify.app/" 
+  width="100%" 
+  height="100%" 
+  allow="clipboard-write">
+</iframe>
+
+
 </body>
 </html>
