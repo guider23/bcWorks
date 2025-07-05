@@ -36,6 +36,27 @@
     .preview-fallback {
       display: none;
     }
+    #landscape-warning {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #000c;
+      color: #fff;
+      font-size: 2em;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2em;
+    }
+    @media screen and (orientation: portrait) {
+      #landscape-warning {
+        display: flex;
+      }
+      iframe {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -45,10 +66,13 @@
     <img src="https://i.ibb.co/mCk0r7gM/bcworksembark.png" alt="Embark Preview" width="600" />
   </div>
 
+  <div id="landscape-warning">
+    Please rotate your device to landscape mode for the best experience.
+  </div>
+
   <iframe 
     src="https://embark10.netlify.app/" 
     allowfullscreen
   ></iframe>
 </body>
 </html>
-
