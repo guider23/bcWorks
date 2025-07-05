@@ -57,30 +57,69 @@
 <body>
 
 <script>
-  (function removeCommonNinjaWatermark() {
-  const interval = setInterval(() => {
-    // Grab the Common Ninja widget container
-    const component = document.querySelector('.commonninja_component');
+(function () {
+  const allowedDomain = 'bcworks.in.net';
+  const currentDomain = window.location.hostname;
 
-    // Safety checks
-    if (!component || !component.shadowRoot) return;
+  if (!currentDomain.endsWith(allowedDomain)) {
+    console.warn('[🔒 Domain Lock] Unauthorized domain:', currentDomain);
+    return; // Abort script
+  }
 
-    // Access shadow root
-    const shadow = component.shadowRoot;
+  // Begin watermark remover
+  (function removeCommonNinjaWatermarks() {
+    // Check if element is Common Ninja bracket widget link
+    const isCommonNinjaWatermark = (el) => {
+      return (
+        el.tagName === 'A' &&
+        /commoninja\.com/.test(el.href || '') &&
+        /free brackets/i.test(el.innerText.toLowerCase()) &&
+        el.querySelector('img')
+      );
+    };
 
-    // Search for the watermark <a> inside shadow DOM
-    const ribbon = shadow.querySelector('a.commonninja-ribbon-link');
+    const cleanWatermarks = () => {
+      document.querySelectorAll('a').forEach(a => {
+        if (isCommonNinjaWatermark(a)) {
+          console.log('[🧼 Removed Common Ninja Watermark]', a);
+          a.remove();
+        }
+      });
+    };
 
-    if (ribbon) {
-      console.log('[✅ Removed Common Ninja Watermark]', ribbon);
-      ribbon.remove();
-      clearInterval(interval); // Stop checking once it's gone
-    }
-  }, 500);
+    // Run on interval for delayed injections
+    setInterval(cleanWatermarks, 300);
 
-  // Optional: Stop trying after 20 seconds
-  setTimeout(() => clearInterval(interval), 20000);
+    // Watch for DOM changes using MutationObserver
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) {
+            if (isCommonNinjaWatermark(node)) {
+              console.log('[🔍 Observer Removed Common Ninja]', node);
+              node.remove();
+            }
+
+            if (node.querySelectorAll) {
+              node.querySelectorAll('a').forEach(el => {
+                if (isCommonNinjaWatermark(el)) {
+                  console.log('[🔍 Observer Removed Common Ninja]', el);
+                  el.remove();
+                }
+              });
+            }
+          }
+        });
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  })();
 })();
+
 </script>
 <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 <div class="commonninja_component pid-bd6bf5ea-bb61-4705-ae70-f6bf0221d264"></div>
