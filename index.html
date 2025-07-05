@@ -1,456 +1,167 @@
-
-
+<!-- Don't use files without permissions -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7232426578975766"
+     crossorigin="anonymous"></script>
+
   <meta charset="UTF-8" />
-  <title>Tournament</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>BC WORKS</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      width: 100vw;
-      min-height: 100vh;
       overflow: hidden;
       background: #000;
-      box-sizing: border-box;
     }
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      min-width: 100vw;
-    }
-    .commonninja_component {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100vw;
-      height: 100vh;
-      max-width: 100vw;
-      max-height: 100vh;
-      box-sizing: border-box;
-      background: rgba(0,0,0,0.95);
-      border-radius: 0;
-      overflow: hidden;
-    }
-    @media (max-width: 600px) {
-      html, body, .commonninja_component {
-        width: 100vw;
-        height: 100vh;
-        min-width: 100vw;
-        min-height: 100vh;
-        border-radius: 0;
-      }
-    }
-    .preview-fallback {
-      display: none;
-    }
-    #landscape-warning {
-      display: none;
+
+    /* Full blur overlay on top */
+    #blur-overlay {
       position: fixed;
+      inset: 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 9999;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #000c;
-      color: #fff;
-      font-size: 2em;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2em;
-    }
-    @media screen and (orientation: portrait) {
-      #landscape-warning {
-        display: flex;
-      }
-      .commonninja_component {
-        display: none !important;
-      }
-    }
-    #jimjam-loading-overlay {
-      position: fixed;
-      z-index: 10000;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #000d;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transition: opacity 0.5s;
-    }
-    #jimjam-loading-overlay.hide {
-      opacity: 0;
       pointer-events: none;
+      transition: opacity 0.5s ease;
     }
-    #jimjam-loading-content {
-      text-align: center;
+
+    #blur-overlay.fade-out {
+      opacity: 0;
     }
-    #bc-anchor-ad {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9998;
-      background: #181818ee;
-      color: #fff;
-      font-size: 1.1em;
+
+    spline-viewer {
+      width: 100vw;
+      height: 120dvh;
+      display: block;
+    }
+
+    .button-container {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.7em 1.2em;
-      box-shadow: 0 -2px 12px #0008;
-      border-top: 2px solid #333;
-      gap: 1em;
-      min-height: 56px;
-      transition: transform 0.3s;
+      gap: 15px;
     }
-    #bc-anchor-ad a {
-      color: #ffd700;
-      text-decoration: underline;
+
+    .custom-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
       font-weight: bold;
-      margin-left: 0.5em;
-    }
-    #bc-anchor-ad .bc-ad-close {
-      margin-left: auto;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5em;
+      color: #FF69B4;
+      background: transparent;
+      border: 1px solid #FF69B4;
+      border-radius: 5px;
       cursor: pointer;
-      padding: 0 0.5em;
-      line-height: 1;
-      opacity: 0.7;
-      transition: opacity 0.2s;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    #bc-anchor-ad .bc-ad-close:hover {
-      opacity: 1;
+
+    .custom-button:hover {
+      background-color: #FF69B4;
+      color: #1E2A44;
     }
-    @media (max-width: 600px) {
-      #bc-anchor-ad {
-        font-size: 1em;
-        min-height: 48px;
-        padding: 0.5em 0.5em;
+
+    @media (max-width: 768px) {
+      spline-viewer {
+        height: 100dvh;
+      }
+
+      .button-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .custom-button {
+        padding: 8px 16px;
+        font-size: 14px;
       }
     }
   </style>
+  <script>
+  (function() {
+    // define your breakpoints (in pixels)
+    const MOBILE_MAX = 768;
+    const TABLET_MAX = 1024;
+
+    // get current viewport width
+    const w = window.innerWidth || document.documentElement.clientWidth;
+
+    // if it’s mobile or tablet, redirect
+    if (w <= TABLET_MAX) {
+      // use location.replace so it doesn’t clutter the back-button history
+      location.replace('https://bcworks.in.net/explore.html');
+    }
+  })();
+</script>
+<script>
+  (function removeSplineLogoFromShadowDOM() {
+
+  // 1) Helper: remove any <a id="logo"> inside each spline-viewer shadowRoot
+  function cleanLogo() {
+    document.querySelectorAll('spline-viewer').forEach(comp => {
+      const sr = comp.shadowRoot;
+      if (!sr) return;
+
+      const logo = sr.getElementById('logo');
+      if (logo) {
+        console.log('[🧼 Removed Spline Logo in shadow]', logo);
+        logo.remove();
+      }
+    });
+  }
+
+  // 2) Run immediately (in case it's already there)
+  cleanLogo();
+
+  // 3) Poll every 300ms to catch re-injections
+  setInterval(cleanLogo, 300);
+
+  // 4) Observe light-DOM mutations (e.g. new spline-viewers added)
+  new MutationObserver(cleanLogo)
+    .observe(document.body, { childList: true, subtree: true });
+  
+})();
+</script>
 </head>
 <body>
+  <!-- Blurred overlay on top -->
+  <div id="blur-overlay"></div>
 
-<script>
-(function () {
-  const allowedDomain = 'bcworks.in.net';
-  const currentDomain = window.location.hostname;
+  <!-- Main content -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.2/build/spline-viewer.js"></script>
+  <spline-viewer url="https://prod.spline.design/U7aRLRYNGJlY91JH/scene.splinecode"></spline-viewer>
 
-  if (!currentDomain.endsWith(allowedDomain)) {
-    console.warn('[🔒 Domain Lock] Unauthorized domain:', currentDomain);
-    return; // Abort script
-  }
-
-  // Begin watermark remover
-  (function removeCommonNinjaWatermarks() {
-    // Check if element is Common Ninja bracket widget link
-    const isCommonNinjaWatermark = (el) => {
-      return (
-        el.tagName === 'A' &&
-        /commoninja\.com/.test(el.href || '') &&
-        /free brackets/i.test(el.innerText.toLowerCase()) &&
-        el.querySelector('img')
-      );
-    };
-
-    const cleanWatermarks = () => {
-      document.querySelectorAll('a').forEach(a => {
-        if (isCommonNinjaWatermark(a)) {
-          console.log('[🧼 Removed Common Ninja Watermark]', a);
-          a.remove();
-        }
-      });
-    };
-
-    // Run on interval for delayed injections
-    setInterval(cleanWatermarks, 300);
-
-    // Watch for DOM changes using MutationObserver
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === 1) {
-            if (isCommonNinjaWatermark(node)) {
-              console.log('[🔍 Observer Removed Common Ninja]', node);
-              node.remove();
-            }
-
-            if (node.querySelectorAll) {
-              node.querySelectorAll('a').forEach(el => {
-                if (isCommonNinjaWatermark(el)) {
-                  console.log('[🔍 Observer Removed Common Ninja]', el);
-                  el.remove();
-                }
-              });
-            }
-          }
-        });
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-  })();
-})();
-
-window.addEventListener('load', function() {
-  var overlay = document.getElementById('jimjam-loading-overlay');
-  if (overlay) {
-    setTimeout(function() {
-      overlay.classList.add('hide');
-      setTimeout(function() {
-        overlay.style.display = 'none';
-      }, 600);
-    }, 500); // Show for 0.5 seconds
-  }
-});
-
-// Anchor ad script moved outside domain lock
-window.addEventListener('DOMContentLoaded', function() {
-  var ads = [
-    {
-      title: 'Nuke.js',
-      price: '199rs',
-      url: 'https://guider23.gumroad.com/l/nuke',
-      img: 'https://i.ibb.co/3Wn6QwB/nukejs.png',
-    },
-    {
-      title: 'BC Works Premium',
-      price: '99rs/mo',
-      url: 'https://guider23.gumroad.com/l/premium',
-      img: 'https://i.ibb.co/6Jw6QwB/bcpremium.png',
-    },
-    {
-      title: 'BC Shield',
-      price: '80rs',
-      url: 'https://guider23.gumroad.com/l/bcshield',
-      img: 'https://i.ibb.co/6F7n6Qw/bcshield.png',
-    }
-  ];
-  var ad = ads[Math.floor(Math.random() * ads.length)];
-  var adBar = document.getElementById('bc-anchor-ad');
-  if (adBar) {
-    adBar.innerHTML =
-      '<div class="bc-minimal-ad-bar">' +
-        '<span class="bc-minimal-ad-icon">' +
-          '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<rect x="5" y="9" width="18" height="12" rx="3" fill="#1967d2"/>' +
-            '<path d="M9 9V7.5C9 5.01472 11.0147 3 13.5 3C15.9853 3 18 5.01472 18 7.5V9" stroke="#174ea6" stroke-width="2" stroke-linecap="round"/>' +
-            '<circle cx="10.5" cy="15.5" r="1.5" fill="#fff"/>' +
-            '<circle cx="17.5" cy="15.5" r="1.5" fill="#fff"/>' +
-          '</svg>' +
-        '</span>' +
-        '<span class="bc-minimal-ad-title">' + ad.title + '</span>' +
-        '<span class="bc-minimal-ad-price">' + ad.price + '</span>' +
-        '<a class="bc-minimal-ad-btn" href="' + ad.url + '" target="_blank" rel="noopener">Buy</a>' +
-        '<button class="bc-minimal-ad-close" title="Close">&times;</button>' +
-      '</div>';
-    adBar.style.display = 'flex';
-    adBar.classList.add('bc-minimal-ad-fadein');
-    adBar.querySelector('.bc-minimal-ad-close').onclick = function() {
-      adBar.classList.remove('bc-minimal-ad-fadein');
-      adBar.classList.add('bc-minimal-ad-fadeout');
-      setTimeout(function() { adBar.style.display = 'none'; adBar.classList.remove('bc-minimal-ad-fadeout'); }, 350);
-    };
-  }
-});
-
-// Add minimal rich ad styles
-(function() {
-  var style = document.createElement('style');
-  style.innerHTML = `
-    #bc-anchor-ad {
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      min-height: 0;
-      background: none;
-      pointer-events: none;
-    }
-    .bc-minimal-ad-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.4em;
-      background: #fff;
-      border: 1.5px solid #e0e0e0;
-      border-radius: 18px 18px 0 0;
-      box-shadow: 0 4px 24px #0001;
-      padding: 0.6em 1.2em 0.6em 0.8em;
-      max-width: 480px;
-      width: 98vw;
-      margin: 0.7em auto 1.2em auto;
-      pointer-events: auto;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-      animation: none;
-      position: relative;
-      flex-wrap: nowrap;
-      min-width: 0;
-    }
-    .bc-minimal-ad-title, .bc-minimal-ad-price {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      flex-shrink: 1;
-    }
-    #bc-anchor-ad.bc-minimal-ad-fadein .bc-minimal-ad-bar {
-      animation: bcMinimalAdFadeInUp 0.5s cubic-bezier(.68,-0.55,.27,1.55);
-    }
-    #bc-anchor-ad.bc-minimal-ad-fadeout .bc-minimal-ad-bar {
-      opacity: 0;
-      transform: translateY(100%);
-      transition: opacity 0.35s, transform 0.35s;
-    }
-    @keyframes bcMinimalAdFadeInUp {
-      0% { opacity: 0; transform: translateY(100%) scale(0.98); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .bc-minimal-ad-img { display: none; }
-    .bc-minimal-ad-icon {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #e8f0fe;
-      border-radius: 8px;
-      margin-right: 0.1em;
-      flex-shrink: 0;
-      box-shadow: 0 1px 4px #0001;
-    }
-    .bc-minimal-ad-title {
-      font-weight: 600;
-      font-size: 1.08em;
-      color: #202124;
-      letter-spacing: 0.2px;
-      margin-right: 0.3em;
-    }
-    .bc-minimal-ad-price {
-      font-size: 1em;
-      color: #1967d2;
-      background: #e8f0fe;
-      font-weight: 500;
-      margin-right: 0.7em;
-      opacity: 1;
-      border-radius: 6px;
-      padding: 0.15em 0.7em;
-      display: inline-block;
-    }
-    .bc-minimal-ad-btn {
-      background: #1967d2;
-      color: #fff;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5em 1.3em;
-      font-size: 1em;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 1px 6px #1967d211;
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
-      display: inline-block;
-      font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-      min-width: 0;
-      max-width: 100%;
-      flex-shrink: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .bc-minimal-ad-btn:hover {
-      background: #174ea6;
-      color: #fff;
-      box-shadow: 0 2px 12px #1967d222;
-      transform: scale(1.05);
-    }
-    .bc-minimal-ad-close {
-      position: absolute;
-      top: 0.2em;
-      right: 0.3em;
-      background: none;
-      border: none;
-      color: #ea4335;
-      font-size: 1.2em;
-      cursor: pointer;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.7;
-      transition: opacity 0.2s, color 0.2s, background 0.2s;
-      z-index: 2;
-    }
-    .bc-minimal-ad-close:hover {
-      opacity: 1;
-      background: #ea4335;
-      color: #fff;
-    }
-    @media (max-width: 600px) {
-      .bc-minimal-ad-bar {
-        max-width: 99vw;
-        border-radius: 12px 12px 0 0;
-        padding: 0.4em 0.5em 0.4em 0.5em;
-        gap: 0.2em;
-        flex-wrap: nowrap;
-      }
-      .bc-minimal-ad-img {
-        width: 24px;
-        height: 24px;
-        border-radius: 6px;
-      }
-      .bc-minimal-ad-title {
-        font-size: 0.97em;
-        text-align: left;
-        margin-right: 0;
-      }
-      .bc-minimal-ad-btn {
-        min-width: 0;
-        font-size: 0.95em;
-        padding: 0.5em 0.7em;
-        margin-top: 0;
-        width: auto;
-      }
-      .bc-minimal-ad-icon {
-        margin-bottom: 0;
-        margin-right: 0.1em;
-        align-self: center;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-})();
-
-</script>
-<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
-<div id="landscape-warning">
-  Please rotate your device to landscape mode for the best experience.
-</div>
-<div id="jimjam-loading-overlay">
-  <div id="jimjam-loading-content">
-    <img src="https://media.britannia.co.in/Jim_Jam_Pack_aa2e0478ea.png" alt="Jim Jam" style="max-width: 200px; display: block; margin: 0 auto 1em auto;" />
-    <div style="font-size: 2em; font-weight: bold; color: #fff; text-align: center;">Win a JIM JAM Now !!</div>
+  <div class="button-container">
+    <a href="explore.html"><button class="custom-button">Explore</button></a>
   </div>
-</div>
-<div id="bc-anchor-ad" style="display:none;"></div>
-<div class="commonninja_component pid-bd6bf5ea-bb61-4705-ae70-f6bf0221d264"></div>
+
+  <script>
+    // Blur overlay removal
+    window.addEventListener('load', () => {
+      const blur = document.getElementById('blur-overlay');
+      setTimeout(() => {
+        blur.classList.add('fade-out');
+        setTimeout(() => blur.remove(), 500); // remove after fade
+      }, 1000);
+    });
+
+    // Spline logo killer
+    const removeLogo = () => {
+      const el = document.querySelector('a#logo');
+      if (el) el.remove();
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      removeLogo();
+      setInterval(removeLogo, 1000);
+    });
+  </script>
 </body>
 </html>
