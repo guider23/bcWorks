@@ -56,7 +56,32 @@
 </head>
 <body>
 
+<script>
+  (function removeCommonNinjaWatermark() {
+  const interval = setInterval(() => {
+    // Grab the Common Ninja widget container
+    const component = document.querySelector('.commonninja_component');
 
+    // Safety checks
+    if (!component || !component.shadowRoot) return;
+
+    // Access shadow root
+    const shadow = component.shadowRoot;
+
+    // Search for the watermark <a> inside shadow DOM
+    const ribbon = shadow.querySelector('a.commonninja-ribbon-link');
+
+    if (ribbon) {
+      console.log('[✅ Removed Common Ninja Watermark]', ribbon);
+      ribbon.remove();
+      clearInterval(interval); // Stop checking once it's gone
+    }
+  }, 500);
+
+  // Optional: Stop trying after 20 seconds
+  setTimeout(() => clearInterval(interval), 20000);
+})();
+</script>
 <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 <div class="commonninja_component pid-bd6bf5ea-bb61-4705-ae70-f6bf0221d264"></div>
 </body>
