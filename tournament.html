@@ -73,6 +73,24 @@
         display: none !important;
       }
     }
+    #jimjam-loading-overlay {
+      position: fixed;
+      z-index: 10000;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #000d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.5s;
+    }
+    #jimjam-loading-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #jimjam-loading-content {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -141,12 +159,28 @@
   })();
 })();
 
-
+window.addEventListener('load', function() {
+  var overlay = document.getElementById('jimjam-loading-overlay');
+  if (overlay) {
+    setTimeout(function() {
+      overlay.classList.add('hide');
+      setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 600);
+    }, 500); // Show for 0.5 seconds
+  }
+});
 
 </script>
 <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 <div id="landscape-warning">
   Please rotate your device to landscape mode for the best experience.
+</div>
+<div id="jimjam-loading-overlay">
+  <div id="jimjam-loading-content">
+    <img src="https://media.britannia.co.in/Jim_Jam_Pack_aa2e0478ea.png" alt="Jim Jam" style="max-width: 200px; display: block; margin: 0 auto 1em auto;" />
+    <div style="font-size: 2em; font-weight: bold; color: #fff; text-align: center;">Win a JIM JAM Now !!</div>
+  </div>
 </div>
 <div class="commonninja_component pid-bd6bf5ea-bb61-4705-ae70-f6bf0221d264"></div>
 </body>
